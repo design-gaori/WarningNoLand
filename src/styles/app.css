@@ -1,0 +1,448 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-sky-bottom);
+  font-family: var(--font-family);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 앱 전체. 크기·회전은 viewport.ts가 지정 */
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* 하늘 배경: 창 전체 (단색 여백 금지, Q3·Q20) */
+.sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--color-sky-top), var(--color-sky-bottom));
+}
+
+/* 스크롤 면 (stage1만, Q29·Q30) */
+.scroller {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+.scroll-content {
+  position: relative;
+  width: 100%;
+  /* 스크롤 길이는 이 요소 높이로만 정한다 (보드 SVG 여유 영역이 스크롤을 늘리지 않게) */
+  overflow: hidden;
+  height: calc(var(--content-h-px, 0) * 1px);
+}
+.stage-plane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--design-w) * 1px);
+  transform: scale(var(--u));
+  transform-origin: 0 0;
+}
+
+.cloud,
+.dot {
+  position: absolute;
+  pointer-events: none;
+}
+.bleed {
+  position: absolute;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: none;
+}
+.cloud .bleed,
+.dot .bleed {
+  inset: 0;
+}
+
+/* 보드 (G-7: board 하나만 확대·축소하면 보드 전체가 같이 변함) */
+.board-layer {
+  position: absolute;
+}
+.board {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.board-svg {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* 잡을 수 있는 콘 그림: 그려진 부분만 잡힘(9-2-8, Q15). 콘 위에서는 터치 스크롤 대신 드래그(Q33) */
+.art-cone,
+.art-storage {
+  pointer-events: visiblePainted;
+  touch-action: none;
+  cursor: grab;
+}
+.card[data-empty='true'] .art-storage {
+  cursor: default;
+}
+.card-art-layer {
+  position: absolute;
+  overflow: visible;
+}
+
+/* 드래그 중인 콘 */
+.drag-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.drag-ghost {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* 화면 고정 UI — 위쪽 기준 */
+.hud-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--design-w) * 1px);
+  height: calc(var(--view-h) * 1px);
+  transform: scale(var(--u));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.hud-top > * {
+  pointer-events: auto;
+}
+
+.restart {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}
+.restart-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.restart-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: max(var(--font-size-restart), calc(var(--font-min-button) / var(--u)));
+  color: var(--color-text-on-orange);
+  white-space: nowrap;
+}
+
+/* 보관 영역: 위 여백 48, 안내 띠 위로도 48(위 여백과 같게). 카드가 넘치면 이 영역만 스크롤 (Q37)
+ * 카드는 오른쪽 끝(x 1850)에 맞춰 줄어든다 */
+.storage {
+  position: absolute;
+  height: calc(var(--view-h) * 1px - var(--space-edge-top) * 2 - var(--ticker-h, 48) * 1px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-card-gap);
+  overflow-y: auto;
+  overflow-x: visible;
+  scrollbar-width: none;
+}
+.storage::-webkit-scrollbar {
+  display: none;
+}
+/* 카드 자리: 줄어든 크기만큼만 차지 (배율 --card-s, shell.ts cardScale) */
+.card-slot {
+  position: relative;
+  flex: none;
+  width: calc(var(--size-card-w) * var(--card-s, 1));
+  height: calc(var(--size-card-h) * var(--card-s, 1));
+}
+/* 카드 내용은 Figma 원래 크기로 그리고 통째로 축소 → 비율·아이콘·글자 모두 같은 비율로 줄어듦 */
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scale(var(--card-s, 1));
+  transform-origin: 0 0;
+  width: var(--size-card-w);
+  height: var(--size-card-h);
+  background: var(--color-card-bg);
+  border: var(--border-card) solid var(--color-card-border);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(6px);
+  filter: drop-shadow(0 -4px 12px var(--color-card-shadow));
+}
+.card-count {
+  position: absolute;
+  /* Figma: 아이콘 (20,17) 23×37, 글자 (47,19). 테두리 3px 안쪽 기준으로 보정 */
+  left: calc(20px - var(--border-card));
+  top: calc(17px - var(--border-card));
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 37px;
+}
+.card-count-icon {
+  width: 17.4px;
+  height: 21.87px;
+  margin-left: 2.8px;
+}
+.card-count-text {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: max(var(--font-size-count), calc(var(--font-min-text) / (var(--u) * var(--card-s, 1))));
+  line-height: 1;
+  color: var(--color-orange-deep);
+}
+
+/* 화면 고정 UI — 아래쪽 기준: 안내 띠 (화면 맨 아래에 붙음)
+ * 높이 = --ticker-h(디자인 px). 글자 = 높이 × 20/48 → 글자 위아래 여백이 Figma 비율(14:20:14)로 유지 */
+.ticker {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: calc(var(--design-w) * 1px);
+  height: calc(var(--ticker-h, 48) * 1px);
+  transform: scale(var(--u));
+  transform-origin: 0 100%;
+  background: var(--color-orange);
+  overflow: hidden;
+  pointer-events: none;
+}
+.ticker-row {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-ticker-gap);
+  white-space: nowrap;
+}
+.ticker-text {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-weight: 800;
+  font-size: calc(var(--ticker-h, 48) * 1px * 20 / 48);
+  line-height: 1;
+  color: var(--color-text-on-orange);
+}
+
+/* 맨 위: 종이 질감 (Figma 1:651) — 화면 전체를 여백 없이 덮음 */
+.paper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  mix-blend-mode: var(--paper-blend);
+  opacity: var(--paper-opacity);
+  pointer-events: none;
+}
+
+/* ───────────── STEP 9: 화면 공통 ───────────── */
+
+/* 스크롤 없는 화면(메인·스테이지 선택·도감)의 1920 기준 면 */
+.plane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--design-w) * 1px);
+  transform: scale(var(--u));
+  transform-origin: 0 0;
+}
+.plane > * {
+  position: absolute;
+}
+
+/* 흐린 흰 점 (Figma Ellipse + 흐림) */
+.blur-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  pointer-events: none;
+}
+
+/* 주황 마름모 버튼 (RESTART와 같은 모양: BACK) */
+.diamond-button {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+}
+.diamond-button-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.diamond-button-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: max(var(--font-size-restart), calc(var(--font-min-button) / var(--u)));
+  color: var(--color-text-on-orange);
+  white-space: nowrap;
+}
+
+/* 메인 */
+.main-board {
+  display: block;
+  pointer-events: none;
+}
+.main-start {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  /* Game Start 마름모 모양만 눌림 */
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* 스테이지 선택 표지판 */
+.sign {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  pointer-events: none; /* 그려진 부분(아래 자식)만 눌림 */
+}
+.sign > * {
+  position: absolute;
+  pointer-events: auto;
+}
+.sign[data-disabled='true'] {
+  cursor: default;
+}
+.sign[data-disabled='true'] > * {
+  cursor: default;
+}
+.sign-pole {
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 100px;
+}
+.sign-shape .bleed {
+  position: absolute;
+  width: auto;
+  height: auto;
+}
+.sign-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 64px;
+  color: #ffffff;
+  white-space: nowrap;
+  pointer-events: none !important;
+}
+.sign-label-ko {
+  font-family: 'Nanum Gothic', sans-serif;
+}
+.sign-dex-board {
+  border: 3px solid #000000;
+  border-radius: 20px;
+  background: linear-gradient(to bottom, #ff7531, #ff833e 51.923%, #ffae67);
+}
+.sign-dex-inner {
+  border: 12px solid #ffffff;
+  border-radius: 5px;
+  pointer-events: none !important;
+}
+
+/* 도감 */
+.cone-ring,
+.cone-icon {
+  display: block;
+  pointer-events: none;
+}
+
+/* 결과 띠 (Game Clear / 오류): 화면 가운데, 종이 질감 아래. 떠 있는 동안 입력을 막는다 */
+.banner-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-orange);
+}
+.banner-clear .banner {
+  width: 100%; /* 가로로 꽉 차게 (UI checklist) */
+  height: calc(291px * var(--u));
+}
+.banner-clear .banner-text {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: calc(128px * var(--u));
+  color: #ffffff;
+}
+.banner-error .banner {
+  width: calc(976px * var(--u));
+  height: calc(148px * var(--u));
+}
+.banner-error .banner-text {
+  font-family: 'Nanum Gothic', sans-serif; /* 사용자 답변: Figma의 Pretendard 대신 나눔고딕 ExtraBold */
+  font-weight: 800;
+  font-size: max(calc(48px * var(--u)), var(--font-min-text));
+  color: #ffffff;
+}
+
+/* 스테이지 선택: 도로 (Figma 7:183) — 화면 아래 끝 기준, 가로는 화면 밖까지(-133 ~ 2054) */
+.road {
+  position: absolute;
+  left: calc(-133px * var(--u));
+  bottom: 0;
+  width: 2187px;
+  height: 157px;
+  background: #424242;
+  transform: scale(var(--u));
+  transform-origin: 0 100%;
+  pointer-events: none;
+}
+.road-dash {
+  position: absolute;
+  display: block;
+}

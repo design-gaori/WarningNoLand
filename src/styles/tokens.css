@@ -1,0 +1,50 @@
+/*
+ * 디자인 토큰 — Figma "땅없음 프레임 UI" stage1(1:252) 값.
+ * 크기 값은 모두 기준 해상도 1920×1080의 디자인 px.
+ */
+:root {
+  /* 기준 해상도 */
+  --design-w: 1920;
+  --design-h: 1080;
+
+  /* 색 */
+  --color-sky-top: #6cc7ff;
+  --color-sky-bottom: #1fa6fb;
+  --color-orange: #ff833e;
+  --color-orange-deep: #ff7531;
+  --color-card-bg: #ffffff;
+  --color-card-border: #1fa6fb;
+  --color-card-shadow: rgba(7, 113, 179, 0.1);
+  --color-text-on-orange: #ffffff;
+
+  /* 반경·선 */
+  --radius-card: 30px;
+  --border-card: 3px;
+
+  /* 간격 */
+  --space-edge-x: 70px;        /* RESTART 왼쪽 */
+  --space-edge-top: 48px;      /* 위 여백 */
+  --space-card-gap: 8px;       /* 보관 카드 간격 (Q36) */
+  --space-board-bottom: 48px;  /* 도착 땅 아래 여백 (Q31) */
+  --space-ticker-gap: 128px;   /* 안내 띠 문구 간격 */
+
+  /* 크기 */
+  --size-card-w: 263px;
+  --size-card-h: 320px;
+  --size-ticker-h: 48px;
+  --size-restart-w: 236.121px;
+  --size-restart-h: 147.019px;
+
+  /* 글꼴: 영문 Outfit, 한글 나눔고딕 ExtraBold (Q4) */
+  --font-family: 'Outfit', 'Nanum Gothic', sans-serif;
+  --font-size-restart: 28px;
+  --font-size-count: 24px;
+  --font-size-ticker: 20px;
+  /* 화면에서 이보다 작아지지 않게 하는 최소 크기(실제 화면 px, 가정 G1) */
+  --font-min-text: 12px;
+  --font-min-button: 14px;
+
+  /* 종이 질감 (Figma: color-dodge, 투명도 50%) */
+  --paper-blend: color-dodge;
+  --paper-opacity: 0.5;
+}

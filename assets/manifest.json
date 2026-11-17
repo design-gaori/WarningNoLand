@@ -1,0 +1,549 @@
+{
+  "note": "원본 폴더 C:Gaeun작업\u0003-2작가디땅없음 주의구역 에서 바이트 그대로 복사함(2026-11-17). source는 원본 폴더 기준 상대 경로. 원본은 읽기 전용. icon·piece 복사본에는 SVGO를 적용함(2026-11-17, viewBox 유지, id·클래스에 접두어, 스타일 인라인화). 적용 전후 칸 위치 차이는 최대 0.0012.",
+  "categories": {
+    "reference": "기준(그리지 않음)",
+    "screen-icon": "화면용(SVG.1)",
+    "cone": "콘(SVG.2)",
+    "land": "땅 — 시작·도착 땅은 icon-safety-cone 사용(A1)",
+    "character": "캐릭터 — 사용 안 함(Q22)",
+    "ui": "UI(Figma에서 내려받음)",
+    "decoration": "장식(구름·질감)",
+    "screen": "화면 전용 그래픽"
+  },
+  "assets": [
+    {
+      "id": "base-tile",
+      "file": "svg/ref/base-tile.svg",
+      "source": "SVG.1/0.기본틀.svg",
+      "category": "reference",
+      "usage": "칸 크기 기준(화면에 그리지 않음)",
+      "viewBox": "0 0 200.52 125.22",
+      "bytes": 453
+    },
+    {
+      "id": "icon-french-fries",
+      "file": "svg/icon/french-fries.svg",
+      "source": "SVG.1/감자튀김.1.svg",
+      "nameKo": "감자튀김",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 269.51",
+      "bytes": 18720
+    },
+    {
+      "id": "piece-french-fries",
+      "file": "svg/piece/french-fries.svg",
+      "source": "SVG.2/감자튀김.2.svg",
+      "nameKo": "감자튀김",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 444.09 482.1",
+      "bytes": 26684
+    },
+    {
+      "id": "icon-cat",
+      "file": "svg/icon/cat.svg",
+      "source": "SVG.1/고양이.1.svg",
+      "nameKo": "고양이",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 256.15",
+      "bytes": 28523
+    },
+    {
+      "id": "piece-cat",
+      "file": "svg/piece/cat.svg",
+      "source": "SVG.2/고양이.2.svg",
+      "nameKo": "고양이",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 444.07 397.55",
+      "bytes": 38344
+    },
+    {
+      "id": "icon-poop",
+      "file": "svg/icon/poop.svg",
+      "source": "SVG.1/똥.1.svg",
+      "nameKo": "똥",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 216.65",
+      "bytes": 6702
+    },
+    {
+      "id": "piece-poop",
+      "file": "svg/piece/poop.svg",
+      "source": "SVG.2/똥.2.svg",
+      "nameKo": "똥",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 556 358.5",
+      "bytes": 14333
+    },
+    {
+      "id": "icon-hat",
+      "file": "svg/icon/hat.svg",
+      "source": "SVG.1/모자.1.svg",
+      "nameKo": "모자",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 211.46",
+      "bytes": 8556
+    },
+    {
+      "id": "piece-hat",
+      "file": "svg/piece/hat.svg",
+      "source": "SVG.2/모자.2.svg",
+      "nameKo": "모자",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 330.85 353.29",
+      "bytes": 17078
+    },
+    {
+      "id": "icon-person",
+      "file": "svg/icon/person.svg",
+      "source": "SVG.1/사람.1.svg",
+      "nameKo": "사람",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 242.25",
+      "bytes": 8560
+    },
+    {
+      "id": "piece-person",
+      "file": "svg/piece/person.svg",
+      "source": "SVG.2/사람.2.svg",
+      "nameKo": "사람",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 669.78 454.84",
+      "bytes": 23058
+    },
+    {
+      "id": "icon-soju",
+      "file": "svg/icon/soju.svg",
+      "source": "SVG.1/소주.1.svg",
+      "nameKo": "소주",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 279.16",
+      "bytes": 41519
+    },
+    {
+      "id": "piece-soju",
+      "file": "svg/piece/soju.svg",
+      "source": "SVG.2/소주.2.svg",
+      "nameKo": "소주",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 443.3 491.75",
+      "bytes": 54465
+    },
+    {
+      "id": "icon-fire-hydrant",
+      "file": "svg/icon/fire-hydrant.svg",
+      "source": "SVG.1/소화전.1.svg",
+      "nameKo": "소화전",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 275.85",
+      "bytes": 13094
+    },
+    {
+      "id": "piece-fire-hydrant",
+      "file": "svg/piece/fire-hydrant.svg",
+      "source": "SVG.2/소화전.2.svg",
+      "nameKo": "소화전",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 444.5 417.7",
+      "bytes": 16188
+    },
+    {
+      "id": "icon-traffic-light",
+      "file": "svg/icon/traffic-light.svg",
+      "source": "SVG.1/신호등.1.svg",
+      "nameKo": "신호등",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 287.35",
+      "bytes": 8339
+    },
+    {
+      "id": "piece-traffic-light",
+      "file": "svg/piece/traffic-light.svg",
+      "source": "SVG.2/신호등.2.svg",
+      "nameKo": "신호등",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 330.86 428.23",
+      "bytes": 12783
+    },
+    {
+      "id": "icon-trash-can",
+      "file": "svg/icon/trash-can.svg",
+      "source": "SVG.1/쓰레기통.1.svg",
+      "nameKo": "쓰레기통",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 255.36",
+      "bytes": 8936
+    },
+    {
+      "id": "piece-trash-can",
+      "file": "svg/piece/trash-can.svg",
+      "source": "SVG.2/쓰레기통.2.svg",
+      "nameKo": "쓰레기통",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 556.57 467.96",
+      "bytes": 22850
+    },
+    {
+      "id": "icon-ice-cream",
+      "file": "svg/icon/ice-cream.svg",
+      "source": "SVG.1/아이스크림.1.svg",
+      "nameKo": "아이스크림",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 245.95",
+      "bytes": 17720
+    },
+    {
+      "id": "piece-ice-cream",
+      "file": "svg/piece/ice-cream.svg",
+      "source": "SVG.2/아이스크림.2.svg",
+      "nameKo": "아이스크림",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 330.86 316.66",
+      "bytes": 19372
+    },
+    {
+      "id": "icon-safety-cone",
+      "file": "svg/icon/safety-cone.svg",
+      "source": "SVG.1/안전콘.1.svg",
+      "nameKo": "안전콘",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 234.65",
+      "bytes": 5811
+    },
+    {
+      "id": "piece-safety-cone",
+      "file": "svg/piece/safety-cone.svg",
+      "source": "SVG.2/안전콘.2.svg",
+      "nameKo": "안전콘",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 217.62 234.65",
+      "bytes": 5502
+    },
+    {
+      "id": "icon-wine",
+      "file": "svg/icon/wine.svg",
+      "source": "SVG.1/와인.1.svg",
+      "nameKo": "와인",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 282.29",
+      "bytes": 23891
+    },
+    {
+      "id": "piece-wine",
+      "file": "svg/piece/wine.svg",
+      "source": "SVG.2/와인.2.svg",
+      "nameKo": "와인",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 330.84 494.88",
+      "bytes": 32145
+    },
+    {
+      "id": "icon-umbrella",
+      "file": "svg/icon/umbrella.svg",
+      "source": "SVG.1/우산.1.svg",
+      "nameKo": "우산",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 269.64",
+      "bytes": 10067
+    },
+    {
+      "id": "piece-umbrella",
+      "file": "svg/piece/umbrella.svg",
+      "source": "SVG.2/우산.2.svg",
+      "nameKo": "우산",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 442.7 411.5",
+      "bytes": 12974
+    },
+    {
+      "id": "icon-easel",
+      "file": "svg/icon/easel.svg",
+      "source": "SVG.1/이젤.1.svg",
+      "nameKo": "이젤",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 279.38",
+      "bytes": 9352
+    },
+    {
+      "id": "piece-easel",
+      "file": "svg/piece/easel.svg",
+      "source": "SVG.2/이젤.2.svg",
+      "nameKo": "이젤",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 443.03 491.98",
+      "bytes": 23895
+    },
+    {
+      "id": "icon-lamp",
+      "file": "svg/icon/lamp.svg",
+      "source": "SVG.1/전등.1.svg",
+      "nameKo": "전등",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 274.23",
+      "bytes": 8967
+    },
+    {
+      "id": "piece-lamp",
+      "file": "svg/piece/lamp.svg",
+      "source": "SVG.2/전등.2.svg",
+      "nameKo": "전등",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 444.09 486.83",
+      "bytes": 20003
+    },
+    {
+      "id": "icon-cheese",
+      "file": "svg/icon/cheese.svg",
+      "source": "SVG.1/치즈.1.svg",
+      "nameKo": "치즈",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 262.03",
+      "bytes": 11459
+    },
+    {
+      "id": "piece-cheese",
+      "file": "svg/piece/cheese.svg",
+      "source": "SVG.2/치즈.2.svg",
+      "nameKo": "치즈",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 556.64 403.86",
+      "bytes": 23053
+    },
+    {
+      "id": "icon-cake",
+      "file": "svg/icon/cake.svg",
+      "source": "SVG.1/케이크.1.svg",
+      "nameKo": "케이크",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 232.93",
+      "bytes": 30179
+    },
+    {
+      "id": "piece-cake",
+      "file": "svg/piece/cake.svg",
+      "source": "SVG.2/케이크.2.svg",
+      "nameKo": "케이크",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 444.07 303.64",
+      "bytes": 38667
+    },
+    {
+      "id": "icon-tree",
+      "file": "svg/icon/tree.svg",
+      "source": "SVG.1/트리.1.svg",
+      "nameKo": "트리",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 290.15",
+      "bytes": 12624
+    },
+    {
+      "id": "piece-tree",
+      "file": "svg/piece/tree.svg",
+      "source": "SVG.2/트리.2.svg",
+      "nameKo": "트리",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 330.85 360.86",
+      "bytes": 21145
+    },
+    {
+      "id": "icon-sign-board",
+      "file": "svg/icon/sign-board.svg",
+      "source": "SVG.1/표지판.1.svg",
+      "nameKo": "표지판",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 285.48",
+      "bytes": 15446
+    },
+    {
+      "id": "piece-sign-board",
+      "file": "svg/piece/sign-board.svg",
+      "source": "SVG.2/표지판.2.svg",
+      "nameKo": "표지판",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 556.66 427.31",
+      "bytes": 22121
+    },
+    {
+      "id": "icon-flower-pot",
+      "file": "svg/icon/flower-pot.svg",
+      "source": "SVG.1/화분.1.svg",
+      "nameKo": "화분",
+      "category": "screen-icon",
+      "usage": "main·cone(도감) 화면용 1칸 그림",
+      "viewBox": "0 0 217.62 285.12",
+      "bytes": 11760
+    },
+    {
+      "id": "piece-flower-pot",
+      "file": "svg/piece/flower-pot.svg",
+      "source": "SVG.2/화분.2.svg",
+      "nameKo": "화분",
+      "category": "cone",
+      "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
+      "viewBox": "0 0 556.58 497.72",
+      "bytes": 27103
+    },
+    {
+      "id": "figma-restart-button",
+      "file": "svg/figma/restart-button.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:649",
+      "category": "ui",
+      "usage": "stage1 RESTART 버튼 마름모",
+      "viewBox": "0 0 236.121 147.019",
+      "bytes": 578
+    },
+    {
+      "id": "figma-count-cone",
+      "file": "svg/figma/count-cone.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:372",
+      "category": "ui",
+      "usage": "보관 카드 수량 아이콘",
+      "viewBox": "0 0 17.3956 21.8689",
+      "bytes": 440
+    },
+    {
+      "id": "figma-cloud-1",
+      "file": "svg/figma/cloud-1.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:253",
+      "category": "decoration",
+      "usage": "stage1 구름(흐림 필터)",
+      "viewBox": "0 0 429 291.109",
+      "bytes": 1180
+    },
+    {
+      "id": "figma-cloud-2",
+      "file": "svg/figma/cloud-2.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:259",
+      "category": "decoration",
+      "usage": "stage1 구름(흐림 필터)",
+      "viewBox": "0 0 303.1 210.774",
+      "bytes": 1181
+    },
+    {
+      "id": "figma-cloud-3",
+      "file": "svg/figma/cloud-3.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:265",
+      "category": "decoration",
+      "usage": "stage1 구름(프레임 밖, 흐림 필터)",
+      "viewBox": "0 0 417 283.452",
+      "bytes": 1181
+    },
+    {
+      "id": "figma-game-start",
+      "file": "svg/figma/game-start.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:88",
+      "category": "ui",
+      "usage": "main Game Start 마름모+그림자(필터)",
+      "viewBox": "0 0 481.553 365.687",
+      "bytes": 1129
+    },
+    {
+      "id": "figma-title-1-ttang",
+      "file": "svg/figma/title-1-ttang.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:79",
+      "category": "screen",
+      "usage": "main 타이틀 글자 땅(제작 중)",
+      "viewBox": "0 0 126.152 140.419",
+      "bytes": 2222
+    },
+    {
+      "id": "figma-title-2-eop",
+      "file": "svg/figma/title-2-eop.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:27",
+      "category": "screen",
+      "usage": "main 타이틀 글자 없(제작 중)",
+      "viewBox": "0 0 132.159 140.419",
+      "bytes": 2291
+    },
+    {
+      "id": "figma-title-3-eum",
+      "file": "svg/figma/title-3-eum.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:47",
+      "category": "screen",
+      "usage": "main 타이틀 글자 음(제작 중)",
+      "viewBox": "0 0 127.654 136.664",
+      "bytes": 1500
+    },
+    {
+      "id": "figma-title-4-ju",
+      "file": "svg/figma/title-4-ju.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:85",
+      "category": "screen",
+      "usage": "main 타이틀 글자 주(제작 중)",
+      "viewBox": "0 0 128.404 135.163",
+      "bytes": 1419
+    },
+    {
+      "id": "figma-title-5-ui",
+      "file": "svg/figma/title-5-ui.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:83",
+      "category": "screen",
+      "usage": "main 타이틀 글자 의(제작 중)",
+      "viewBox": "0 0 118.643 140.419",
+      "bytes": 1764
+    },
+    {
+      "id": "figma-title-6-gu",
+      "file": "svg/figma/title-6-gu.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:81",
+      "category": "screen",
+      "usage": "main 타이틀 글자 구(제작 중)",
+      "viewBox": "0 0 127.654 133.661",
+      "bytes": 632
+    },
+    {
+      "id": "figma-title-7-yeok",
+      "file": "svg/figma/title-7-yeok.svg",
+      "source": "Figma HwPDXkwn7BVMlgYYzkJMXI node 1:87",
+      "category": "screen",
+      "usage": "main 타이틀 글자 역(제작 중)",
+      "viewBox": "0 0 117.141 141.17",
+      "bytes": 1576
+    },
+    {
+      "id": "paper-texture",
+      "file": "img/paper-texture.webp",
+      "source": "code/Texturelabs_Paper_375XL.jpg (7952×5304, 12MB) → 2560×1708 WebP q60",
+      "category": "decoration",
+      "usage": "전 화면 맨 위 종이 질감(Figma: color-dodge, 투명도 50%, cover)",
+      "bytes": 625490
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$comment": "안전콘 정의(G-9). pattern = 기준 칸 (0,0)에 대한 상대 칸 좌표 [열, 행]. 기준 칸 = 그림에서 가장 위쪽 칸(B5). 패턴은 SVG.2를 측정한 값(docs/ASSET_REPORT.md 2-4). 회전 없음(2-4).",
+  "cones": [
+    { "id": "cake",          "pattern": [[0,0],[0,1],[1,0]],                   "asset": { "piece": "svg/piece/cake.svg",          "icon": "svg/icon/cake.svg" } },
+    { "id": "cat",           "pattern": [[0,0],[0,1],[1,0],[1,1]],             "asset": { "piece": "svg/piece/cat.svg",           "icon": "svg/icon/cat.svg" } },
+    { "id": "cheese",        "pattern": [[0,0],[1,0],[0,1],[0,2]],             "asset": { "piece": "svg/piece/cheese.svg",        "icon": "svg/icon/cheese.svg" } },
+    { "id": "easel",         "pattern": [[0,0],[1,0],[0,1],[1,1],[1,2]],       "asset": { "piece": "svg/piece/easel.svg",         "icon": "svg/icon/easel.svg" } },
+    { "id": "fire-hydrant",  "pattern": [[0,0],[1,0],[2,0],[1,1]],             "asset": { "piece": "svg/piece/fire-hydrant.svg",  "icon": "svg/icon/fire-hydrant.svg" } },
+    { "id": "flower-pot",    "pattern": [[0,0],[1,0],[0,1],[0,2],[1,1],[1,2]], "asset": { "piece": "svg/piece/flower-pot.svg",    "icon": "svg/icon/flower-pot.svg" } },
+    { "id": "french-fries",  "pattern": [[0,0],[0,1],[1,1],[2,1]],             "asset": { "piece": "svg/piece/french-fries.svg",  "icon": "svg/icon/french-fries.svg" } },
+    { "id": "hat",           "pattern": [[0,0],[1,0],[1,1]],                   "asset": { "piece": "svg/piece/hat.svg",           "icon": "svg/icon/hat.svg" } },
+    { "id": "ice-cream",     "pattern": [[0,0],[0,1]],                         "asset": { "piece": "svg/piece/ice-cream.svg",     "icon": "svg/icon/ice-cream.svg" } },
+    { "id": "lamp",          "pattern": [[0,0],[1,0],[0,1],[1,1],[2,1]],       "asset": { "piece": "svg/piece/lamp.svg",          "icon": "svg/icon/lamp.svg" } },
+    { "id": "person",        "pattern": [[0,0],[0,1],[1,1],[0,2],[2,0],[2,1]], "asset": { "piece": "svg/piece/person.svg",        "icon": "svg/icon/person.svg" } },
+    { "id": "poop",          "pattern": [[0,0],[1,0],[0,1],[1,1],[0,2]],       "asset": { "piece": "svg/piece/poop.svg",          "icon": "svg/icon/poop.svg" } },
+    { "id": "safety-cone",   "pattern": [[0,0]],                               "asset": { "piece": "svg/piece/safety-cone.svg",   "icon": "svg/icon/safety-cone.svg" } },
+    { "id": "sign-board",    "pattern": [[0,0],[1,0],[2,0],[0,1]],             "asset": { "piece": "svg/piece/sign-board.svg",    "icon": "svg/icon/sign-board.svg" } },
+    { "id": "soju",          "pattern": [[0,0],[1,0],[1,1],[1,2],[2,1]],       "asset": { "piece": "svg/piece/soju.svg",          "icon": "svg/icon/soju.svg" } },
+    { "id": "traffic-light", "pattern": [[0,0],[0,1],[1,1]],                   "asset": { "piece": "svg/piece/traffic-light.svg", "icon": "svg/icon/traffic-light.svg" } },
+    { "id": "trash-can",     "pattern": [[0,0],[1,0],[0,2],[1,1],[1,2]],       "asset": { "piece": "svg/piece/trash-can.svg",     "icon": "svg/icon/trash-can.svg" } },
+    { "id": "tree",          "pattern": [[0,0],[1,0]],                         "asset": { "piece": "svg/piece/tree.svg",          "icon": "svg/icon/tree.svg" } },
+    { "id": "umbrella",      "pattern": [[0,0],[0,1],[1,1],[0,2]],             "asset": { "piece": "svg/piece/umbrella.svg",      "icon": "svg/icon/umbrella.svg" } },
+    { "id": "wine",          "pattern": [[0,0],[0,1],[1,1],[1,2]],             "asset": { "piece": "svg/piece/wine.svg",          "icon": "svg/icon/wine.svg" } }
+  ]
+}
