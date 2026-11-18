@@ -27,7 +27,7 @@ npm run preview  # 빌드 결과 확인 → http://localhost:4173
 | STEP 8 | 보관함·드래그·탭 회수·리셋·자동 스크롤 | `INTERACTION_NOTES.md` |
 | STEP 9 | 메인·스테이지 선택·도감·성공(Game Clear → 메인)·오류 처리, BACK 버튼 | `FLOW_NOTES.md` |
 | STEP 10 | 모션(UI checklist C1~C6, 2-9)·배경음·효과음, Game Start 그림자 | `MOTION_NOTES.md` |
-| STEP 11 | 15·16번 점검, 창 크기별 확인, 스테이지 추가 대비 | `FINAL_CHECK.md`, `STAGE_GUIDE.md` |
+| STEP 11 | 15·16번 점검, 창 크기별 확인, 스테이지 추가 대비 | `FINAL_CHECK.md`, `STAGE_GUIDE_스테이지추가md.md` |
 
 ## 남은 일
 

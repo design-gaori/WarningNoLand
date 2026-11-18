@@ -1,6 +1,6 @@
 /**
  * 스테이지 추가 대비 점검 (STEP 11). data/stages/*.json 에 파일이 늘어나면 자동으로 함께 검사된다.
- * 실패하면 "데이터가 틀렸거나, 아직 디자인이 정해지지 않은 경우"다 → docs/STAGE_GUIDE.md 참고.
+ * 실패하면 "데이터가 틀렸거나, 아직 디자인이 정해지지 않은 경우"다 → docs/STAGE_GUIDE_스테이지추가md.md 참고.
  * 화면 값(디자인 px)은 Figma stage1 배치(view/layout.ts)를 기준으로 한다.
  */
 import { describe, expect, it } from 'vitest';
