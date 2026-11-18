@@ -10,6 +10,7 @@ import type { Cell, GameState } from '../logic/types';
 import { artRect } from './coneArt';
 import type { ViewConfig } from './config';
 import { sortForDrawing } from './depth';
+import { MOTION } from './motion';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -77,6 +78,8 @@ export interface BoardView {
   readonly svg: SVGSVGElement;
   /** 상태가 바뀌면 콘·땅 층을 다시 그린다. hiddenInstance = 드래그 중이라 숨길 콘 */
   render(state: GameState, hiddenInstance?: string): Promise<void>;
+  /** 다음 그리기가 끝나면 이 콘에 놓기 이펙트(2-9)를 준다 */
+  popOnNextRender(instanceId: string): void;
   /** 드래그 중 미리보기: 콘이 놓일 격자 칸을 흰색으로 채운다(Q23). null이면 지움 */
   setPreview(cells: readonly Cell[] | null): void;
   /** 브라우저 좌표 → 보드 좌표 (배율·스크롤·회전을 모두 반영, SVG 행렬 사용) */
@@ -124,9 +127,31 @@ export function createBoardView(host: HTMLElement, rules: Rules, config: ViewCon
 
   const objects = svg('g', { class: 'objects' }, root);
 
+  let renderSeq = 0;
+  let pendingPop: string | null = null;
+
+  /** 2-9: 놓인 콘이 살짝 눌렸다 튀기(그림만 움직임 — 칸·판정과 무관) */
+  const runPop = (instanceId: string): void => {
+    const wrap = objects.querySelector<SVGGElement>(`g.art-wrap[data-instance-id="${CSS.escape(instanceId)}"]`);
+    if (!wrap || typeof wrap.animate !== 'function') return;
+    const m = MOTION.drop;
+    wrap.animate(
+      [
+        { transform: 'scale(1, 1)' },
+        { transform: `scale(${m.stretchX}, ${m.squashY})`, offset: 0.35 },
+        { transform: 'scale(1, 1)' },
+      ],
+      { duration: m.duration, easing: m.easing },
+    );
+  };
+
   return {
     svg: root,
+    popOnNextRender(instanceId) {
+      pendingPop = instanceId;
+    },
     async render(state, hiddenInstance) {
+      const seq = ++renderSeq;
       const items: { cells: Cell[]; art: Promise<ArtSource>; kind: 'land' | 'cone'; id: string }[] = [];
       for (const c of [...stage.start, ...stage.end]) {
         items.push({ cells: [c], art: loadArt('icon', LAND_ART), kind: 'land', id: `land-${c.col}-${c.row}` });
@@ -138,6 +163,7 @@ export function createBoardView(host: HTMLElement, rules: Rules, config: ViewCon
       }
       const sorted = sortForDrawing(items);
       const arts = await Promise.all(sorted.map((i) => i.art));
+      if (seq !== renderSeq) return; // 더 최근 그리기가 있음
       objects.replaceChildren();
       sorted.forEach((item, i) => {
         const art = arts[i] as ArtSource;
@@ -147,8 +173,16 @@ export function createBoardView(host: HTMLElement, rules: Rules, config: ViewCon
         node.dataset.objectId = item.id;
         if (item.kind === 'cone') node.dataset.instanceId = item.id;
         if (item.id === hiddenInstance) node.style.visibility = 'hidden';
-        objects.appendChild(node);
+        // 연출용 묶음(g): 그림 아래쪽 가운데를 기준으로 크기를 바꾼다
+        const wrap = svg('g', { class: 'art-wrap' }, objects);
+        if (item.kind === 'cone') wrap.dataset.instanceId = item.id;
+        wrap.appendChild(node);
       });
+      if (pendingPop) {
+        const id = pendingPop;
+        pendingPop = null;
+        runPop(id);
+      }
     },
     setPreview(cells) {
       preview.replaceChildren();

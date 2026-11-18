@@ -19,8 +19,30 @@ import { createStorageView } from '../view/storage';
 import type { Viewport } from '../view/viewport';
 import { CONES } from '../game/stages';
 import { showBanner } from './common';
+import { playEffect } from '../audio/sound';
+import { STAGE1_LAYOUT } from '../view/layout';
+import { MOTION } from '../view/motion';
 
 export const RESULT_MS = 2500; // Q28
+
+/**
+ * C3 카드 펼침: i번째 카드를 "간격이 fromGap이었을 때의 자리"에서 지금 자리로 옮긴다.
+ * (Figma: 카드 320, 간격 −200 → 카드 배율만큼 같이 줄임) 그림만 움직이고 자리·판정은 그대로.
+ */
+function spreadCards(storageEl: HTMLElement, cardS: number): void {
+  const m = MOTION.cardSpread;
+  const gap = STAGE1_LAYOUT.storage.gap;
+  storageEl.querySelectorAll<HTMLElement>('.card-slot').forEach((slot, i) => {
+    if (i === 0 || typeof slot.animate !== 'function') return;
+    slot.getAnimations().forEach((a) => a.cancel()); // 펼치는 중에 다시 누르면 처음부터
+    const from = i * (m.fromGap * cardS - gap);
+    slot.animate([{ transform: `translateY(${from}px)` }, { transform: 'translateY(0)' }], {
+      duration: m.duration,
+      easing: m.easing,
+      fill: 'backwards',
+    });
+  });
+}
 
 export async function mountStage(ctx: AppContext, stage: StageDef): Promise<Screen> {
   const { app } = ctx;
@@ -59,6 +81,13 @@ export async function mountStage(ctx: AppContext, stage: StageDef): Promise<Scre
     getViewport: () => ({ vp, winW: ctx.viewport().winW }),
     rerender,
     getTickerH: () => tickerHeight(vp.u),
+    // 2-9 + C6: 콘을 격자에 놓기 성공(보관함에서 놓기·옮기기)했을 때만 이펙트와 효과음
+    onDrop: (source, result) => {
+      if (result.outcome !== 'placed' && result.outcome !== 'moved') return;
+      const id = source.from === 'board' ? source.instanceId : result.state.placed[result.state.placed.length - 1]?.instanceId;
+      if (id) board.popOnNextRender(id);
+      playEffect();
+    },
   });
 
   // 성공 판정 → Game Clear → 메인
@@ -73,7 +102,10 @@ export async function mountStage(ctx: AppContext, stage: StageDef): Promise<Scre
   });
 
   shell.restart.addEventListener('click', () => {
-    if (!interaction.isBusy() && clearTimer === undefined) store.reset(); // 4-12
+    if (interaction.isBusy() || clearTimer !== undefined) return;
+    store.reset(); // 4-12
+    // 사용자 요청: RESTART 때도 카드가 다시 펼쳐짐
+    spreadCards(shell.storage, Number(app.style.getPropertyValue('--card-s')) || 1);
   });
   // BACK (Figma 7:194) → 스테이지 선택. 상태는 저장하지 않음(다시 들어오면 처음 상태)
   shell.back.addEventListener('click', () => {
@@ -91,6 +123,11 @@ export async function mountStage(ctx: AppContext, stage: StageDef): Promise<Scre
     relayoutShell(app, shell, stage, vp.u, vp.viewHDesign);
   };
   relayout(vp);
+  // 글꼴이 늦게 로드되면 안내 띠 문구 너비가 바뀌므로 한 번 더 맞춤
+  void document.fonts.ready.then(() => relayout(vp));
+
+  // C3: 들어올 때마다 보관 카드가 겹친 상태(간격 −200)에서 최종 간격으로 펼쳐짐. 입력은 막지 않음
+  spreadCards(shell.storage, Number(app.style.getPropertyValue('--card-s')) || 1);
 
   return {
     relayout,

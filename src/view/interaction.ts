@@ -14,7 +14,7 @@
  */
 import { cellKey } from '../logic/grid';
 import { anchorForGrab, patternCells } from '../logic/placement';
-import type { DropSource } from '../logic/state';
+import type { DropResult, DropSource } from '../logic/state';
 import type { Cell, ConeDef } from '../logic/types';
 import type { GameStore } from '../game/store';
 import type { BoardView } from './board';
@@ -39,6 +39,8 @@ export interface InteractionDeps {
   readonly rerender: (hiddenInstance?: string) => void;
   /** 안내 띠 높이(디자인 px) — 아래쪽 자동 스크롤 경계 */
   readonly getTickerH: () => number;
+  /** 놓기가 끝난 뒤(연출·소리용, 판정에는 관여하지 않음) */
+  readonly onDrop?: (source: DropSource, result: DropResult) => void;
 }
 
 /**
@@ -243,7 +245,8 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
       return;
     }
     const anchor = targetAnchor(sess, e.clientX, e.clientY);
-    store.drop(sess.source, anchor);
+    const result = store.drop(sess.source, anchor);
+    d.onDrop?.(sess.source, result);
     finish();
   }, { signal });
 

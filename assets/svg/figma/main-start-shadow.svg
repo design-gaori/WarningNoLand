@@ -1,0 +1,15 @@
+<svg width="1920" height="1040" viewBox="0 0 1920 1040" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Figma 1:88 Drop shadow (y 70, blur 20, #94B5D1 50%, multiply) — 그림자만. 화면에서 CSS mix-blend-mode: multiply로 판과 곱하기 -->
+<g filter="url(#shadow)">
+<path d="M959.783 921.507L1178.68 784.842L959.783 648.178L740.905 784.842L959.783 921.507Z" fill="white"/>
+</g>
+<defs>
+<filter id="shadow" x="719.017" y="646.999" width="481.553" height="365.687" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="70"/>
+<feGaussianBlur stdDeviation="10"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.581286 0 0 0 0 0.708446 0 0 0 0 0.819712 0 0 0 0.5 0"/>
+</filter>
+</defs>
+</svg>

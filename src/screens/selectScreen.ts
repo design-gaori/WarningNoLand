@@ -14,6 +14,7 @@ import roadDashSvg from '../../assets/svg/figma/road-dash.svg?url';
 import type { AppContext, Screen } from '../app/types';
 import { STAGES } from '../game/stages';
 import { addDiamondButton, addDot, addPaper, addPlane, addSky, el, img, place } from './common';
+import { MOTION } from '../view/motion';
 
 const DOTS = [
   [513, 129, 44], [1616, 496, 25], [1699, 230, 34], [803, 419, 34], [72, 237, 20], [1338, 54, 25],
@@ -28,7 +29,7 @@ interface SignSlot {
 }
 
 /** Figma 표지판 자리 (프레임 안 좌표) */
-const SLOTS: readonly SignSlot[] = [
+export const SLOTS: readonly SignSlot[] = [
   {
     // Stage 1: Frame 18 (614, 79) 653 × 1692, 삼각형
     frame: { x: 614, y: 79, w: 653, h: 1692 },
@@ -42,7 +43,7 @@ const SLOTS: readonly SignSlot[] = [
   {
     // Stage 2: Frame 19 (1260, 107) 540 × 1191, 원
     frame: { x: 1260, y: 107, w: 540, h: 1191 },
-    pole: { x: 245.5, y: 342, w: 50, h: 716 },
+    pole: { x: 246, y: 342, w: 50, h: 1121 }, // Figma 수정: 기둥 716 → 1121
     shapes: [
       { src: circleOuter, x: 0, y: 0, w: 540, h: 540, inset: { t: -0.28, r: -0.28, b: -0.28, l: -0.28 } },
       { src: circleInner, x: 31, y: 32, w: 476, h: 476, inset: { t: -1.26, r: -1.26, b: -1.26, l: -1.26 } },
@@ -65,18 +66,18 @@ export function mountSelect(ctx: AppContext): Screen {
   plane.style.height = '1080px';
   for (const [x, y, d] of DOTS) addDot(plane, x, y, d);
 
-  // 도감 보기: Frame 21 (120, 347) 501 × 894 — Figma 수정본(기둥 y 102)
+  // 도감: Frame 21 (120, 347) 501 × 894 — Figma 수정본(기둥 y 102, 길이 989 / 문구 "Cone Collection" 두 줄)
   const dex = el('button', 'sign sign-dex', plane);
   dex.type = 'button';
   place(dex, 120, 347, 501, 894);
-  place(el('div', 'sign-pole', dex), 226, 102, 50, 689);
+  place(el('div', 'sign-pole', dex), 226, 102, 50, 989);
   const board = el('div', 'sign-dex-board', dex);
   place(board, 37, 152, 427, 358);
   const inner = el('div', 'sign-dex-inner', dex);
   place(inner, 57, 173, 386, 227);
-  const dexLabel = el('span', 'sign-label sign-label-ko', dex);
-  place(dexLabel, 251 - 142, 257, 284, 91);
-  dexLabel.textContent = '도감 보기';
+  const dexLabel = el('span', 'sign-label sign-label-multi', dex);
+  place(dexLabel, 251 - 192, 206, 384);
+  dexLabel.append('Cone', document.createElement('br'), 'Collection');
   dex.addEventListener('click', () => ctx.navigate({ name: 'cone' }));
 
   // 스테이지 표지판: 데이터 목록으로 채움
@@ -101,6 +102,19 @@ export function mountSelect(ctx: AppContext): Screen {
       sign.dataset.disabled = 'true'; // 데이터 없음 → 눌러도 아무 일 없음
       sign.setAttribute('aria-disabled', 'true');
     }
+  });
+
+  // C2: 왼쪽 표지판(도감)부터 차례로 아래에서 위로 "뿅". 입력은 막지 않음
+  const signs = [...plane.querySelectorAll<HTMLElement>('.sign')].sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
+  const pop = MOTION.signPop;
+  signs.forEach((s, i) => {
+    if (typeof s.animate !== 'function') return;
+    s.animate([{ transform: `translateY(${pop.fromY}px)` }, { transform: 'translateY(0)' }], {
+      duration: pop.duration,
+      delay: i * pop.stagger,
+      easing: pop.easing,
+      fill: 'backwards',
+    });
   });
 
   // BACK (Figma 7:201) → 메인

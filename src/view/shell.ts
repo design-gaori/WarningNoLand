@@ -6,8 +6,10 @@ import { BASE_CELL, cellToScreen } from '../logic/grid';
 import type { GameState, StageDef } from '../logic/types';
 import { ART_BOTTOM_INSET, ART_SCALE } from './coneArt';
 import { STAGE1_LAYOUT as L } from './layout';
+import { MOTION } from './motion';
 
 import restartSvg from '../../assets/svg/figma/restart-button.svg?url';
+import buttonHoverSvg from '../../assets/svg/figma/button-hover.svg?url';
 import countConeSvg from '../../assets/svg/figma/count-cone.svg?url';
 import paperWebp from '../../assets/img/paper-texture.webp?url';
 
@@ -77,6 +79,8 @@ export interface ShellRefs {
   readonly storage: HTMLElement;
   /** 드래그 중인 콘 그림을 띄우는 층 (보관함·보드 위, 종이 질감 아래) */
   readonly dragLayer: HTMLElement;
+  /** 안내 띠의 흐르는 줄 */
+  readonly tickerTrack: HTMLElement;
 }
 
 export function buildShell(app: HTMLElement, stage: StageDef, state: GameState): ShellRefs {
@@ -115,12 +119,14 @@ export function buildShell(app: HTMLElement, stage: StageDef, state: GameState):
   restart.type = 'button';
   place(restart, L.restart.x, L.restart.y, L.restart.w, L.restart.h);
   img(restartSvg, 'restart-bg', restart);
+  img(buttonHoverSvg, 'restart-bg button-hover-bg', restart); // Figma hover(15:2)
   el('span', 'restart-label', restart).textContent = 'RESTART';
 
   const back = el('button', 'restart', hudTop);
   back.type = 'button';
   place(back, L.back.x, L.back.y, L.restart.w, L.restart.h);
   img(restartSvg, 'restart-bg', back);
+  img(buttonHoverSvg, 'restart-bg button-hover-bg', back);
   el('span', 'restart-label', back).textContent = 'BACK';
 
   const storage = el('div', 'storage', hudTop);
@@ -136,9 +142,9 @@ export function buildShell(app: HTMLElement, stage: StageDef, state: GameState):
   }
 
   // ── 화면에 고정: 안내 띠 (아래쪽 기준, 정적. 흐르는 모션은 나중 단계)
+  // C5: 문구 묶음을 여러 번 이어 붙여 왼쪽으로 끊김 없이 흐르게 함(묶음 수·속도는 relayoutShell에서)
   const ticker = el('div', 'ticker', app);
-  const tickerRow = el('div', 'ticker-row', ticker);
-  for (const t of L.ticker.texts) el('span', 'ticker-text', tickerRow).textContent = t;
+  const tickerTrack = el('div', 'ticker-track', ticker);
 
   // ── 드래그 중인 콘
   const dragLayer = el('div', 'drag-layer', app);
@@ -147,7 +153,38 @@ export function buildShell(app: HTMLElement, stage: StageDef, state: GameState):
   const paper = el('div', 'paper', app);
   paper.style.backgroundImage = `url(${paperWebp})`;
 
-  return { scroller, scrollContent, stagePlane, board, restart, back, storage, dragLayer };
+  return { scroller, scrollContent, stagePlane, board, restart, back, storage, dragLayer, tickerTrack };
+}
+
+/** Figma에서 첫 문구가 시작하는 x (Frame 13, 1:645) */
+const TICKER_START_X = 671;
+
+/**
+ * C5 안내 띠 흐름: 문구 묶음(문구 2개 + 간격)을 화면을 덮을 만큼 반복하고,
+ * 묶음 하나 너비만큼 왼쪽으로 이동하는 애니메이션을 끝없이 반복한다(이음매 없음).
+ * 시작 위치는 Figma와 같다(첫 문구 x 671).
+ */
+function layoutTicker(track: HTMLElement): void {
+  const make = (): HTMLElement => {
+    const g = document.createElement('div');
+    g.className = 'ticker-group';
+    for (const t of L.ticker.texts) {
+      const s = document.createElement('span');
+      s.className = 'ticker-text';
+      s.textContent = t;
+      g.appendChild(s);
+    }
+    return g;
+  };
+  track.replaceChildren(make());
+  const groupW = (track.firstElementChild as HTMLElement).offsetWidth; // 디자인 px(배율 적용 전)
+  if (groupW <= 0) return;
+  const startX = TICKER_START_X - groupW;
+  const count = Math.ceil((1920 - startX) / groupW) + 1;
+  for (let i = 1; i < count; i++) track.appendChild(make());
+  track.style.left = `${startX}px`;
+  track.style.setProperty('--ticker-shift', String(groupW));
+  track.style.animationDuration = `${(groupW / MOTION.tickerSpeed) * 1000}ms`;
 }
 
 /**
@@ -173,4 +210,5 @@ export function relayoutShell(app: HTMLElement, refs: ShellRefs, stage: StageDef
   app.style.setProperty('--card-s', String(cardScale(viewHDesign, tickerH, stage.cones.length)));
   refs.stagePlane.style.height = `${contentH}px`;
   refs.scrollContent.style.height = `${contentH * u}px`;
+  layoutTicker(refs.tickerTrack); // 글자 크기가 바뀌면 묶음 너비도 바뀜
 }

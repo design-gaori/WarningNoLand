@@ -1,17 +1,18 @@
-# 진행 상황 (임시 저장: 2026-11-17)
+# 진행 상황 (2026-11-18, STEP 11 최종 점검)
 
 ## 실행 방법
 
 ```
 npm install      # 처음 한 번
 npm run dev      # 개발 서버 → http://localhost:5173
-npm test         # 자동 테스트 (현재 82개 통과)
+npm test         # 자동 테스트 (현재 93개 통과)
 npm run build    # 배포용 빌드 → dist/
+npm run preview  # 빌드 결과 확인 → http://localhost:4173
 ```
 
 개발 모드 전용 주소:
-- `?screen=select` / `?screen=cone` / `?screen=stage`: 해당 화면에서 바로 시작
-- `?demo=1`: 게임 화면에 예시 해답 콘 미리 배치
+- `?screen=select` / `?screen=cone` / `?screen=stage&stage=stage-1`: 해당 화면에서 바로 시작
+- `?demo=1`: 게임 화면에 예시 해답 콘을 미리 배치
 - `?grid=0`: 격자선 끄기
 
 ## 끝난 단계
@@ -24,18 +25,20 @@ npm run build    # 배포용 빌드 → dist/
 | STEP 6 | 가로형 셸(배율·모바일 회전·폰트·토큰) | `SHELL_NOTES.md` |
 | STEP 7 | 보드 SVG 렌더링·깊이 정렬·격자선 설정 | `BOARD_NOTES.md` |
 | STEP 8 | 보관함·드래그·탭 회수·리셋·자동 스크롤 | `INTERACTION_NOTES.md` |
-| STEP 9 | 메인·스테이지 선택·도감·성공(Game Clear → 메인)·오류 처리, BACK 버튼, 스테이지 선택 새 디자인 | `FLOW_NOTES.md` |
+| STEP 9 | 메인·스테이지 선택·도감·성공(Game Clear → 메인)·오류 처리, BACK 버튼 | `FLOW_NOTES.md` |
+| STEP 10 | 모션(UI checklist C1~C6, 2-9)·배경음·효과음, Game Start 그림자 | `MOTION_NOTES.md` |
+| STEP 11 | 15·16번 점검, 창 크기별 확인, 스테이지 추가 대비 | `FINAL_CHECK.md`, `STAGE_GUIDE.md` |
 
-## 아직 안 한 것 · 다음 후보
+## 남은 일
 
-- **모션 전부(UI checklist):** 메인 콘 모양 바뀜·Game Start 둥둥, 표지판 솟아오름, 보관 카드 펼침(−200 → 8), 도감 hover/터치 튀어오름, 안내 띠 왼쪽으로 흐름
-- 메인 그림이 한 장 SVG라서, 모션을 넣거나 타이틀 글자(제작 중)를 바꿀 때는 나눠야 함
-- 효과음·놓을 때 이펙트(C4: 나중에)
-- Stage 2 데이터(사용자가 추가 예정), 3번째 스테이지부터는 선택 화면 새 디자인
-- 섬 그래픽·섬 스테이지 경로 규칙(필요할 때)
-- 확인 못 한 것: 실제 터치 기기, Safari, 드래그 중 자동 스크롤(미리보기 브라우저에서 애니메이션이 돌지 않음) → `INTERACTION_NOTES.md` 4장 체크리스트
+`FINAL_CHECK.md` 5장을 보세요. 핵심은 다음 두 가지입니다.
+
+- 실제 기기 확인
+- Stage 2 데이터
+
+메인 Game Start가 넓은 창에서 잘리던 문제는 고쳤습니다(`FINAL_CHECK.md` 7장).
 
 ## 저장 상태
 
-- 모든 파일은 이 폴더(`code/`)에 저장되어 있습니다. **Git 저장소는 아직 없습니다.**
-- 원본 에셋 폴더(`땅없음 주의구역/`)는 읽기만 했습니다(STEP 3의 SVG 수정본 3개는 사용자가 직접 교체).
+- Git 저장소: `code/` (브랜치 main). 첫 커밋은 STEP 9까지입니다. STEP 10·11은 아직 커밋하지 않았습니다.
+- 원본 에셋 폴더(`땅없음 주의구역/`)는 읽기만 했습니다.

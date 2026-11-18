@@ -4,6 +4,8 @@ import '@fontsource/nanum-gothic/800.css';
 import './styles/app.css';
 
 import { startApp } from './app/router';
+import { installSound, soundState } from './audio/sound';
+import { MOTION } from './view/motion';
 import type { Route } from './app/types';
 
 const app = document.getElementById('app');
@@ -21,6 +23,10 @@ if (!app) {
     if (screen === 'stage') initial = { name: 'stage', stageId: q.get('stage') ?? 'stage-1' };
   }
   // ── /DEV ONLY
+
+  installSound(); // C6: 배경음 반복(첫 입력 때 시작), 효과음 준비
+  document.documentElement.style.setProperty('--button-hover-ms', `${MOTION.buttonHover.duration}ms`);
+  if (import.meta.env.DEV) (window as unknown as { __sound: typeof soundState }).__sound = soundState;
 
   startApp(app, initial);
 }

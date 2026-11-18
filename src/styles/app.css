@@ -239,13 +239,33 @@ body {
   overflow: hidden;
   pointer-events: none;
 }
-.ticker-row {
+/* C5: 문구 묶음을 이어 붙인 줄이 왼쪽으로 끝없이 흐름(속도는 view/motion.ts tickerSpeed) */
+.ticker-track {
+  position: absolute;
+  top: 0;
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-ticker-gap);
   white-space: nowrap;
+  animation-name: ticker-flow;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.ticker-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-ticker-gap);
+  padding-right: var(--space-ticker-gap); /* 묶음 사이 간격도 문구 사이와 같게 */
+  flex: none;
+}
+@keyframes ticker-flow {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(var(--ticker-shift, 0) * -1px));
+  }
 }
 .ticker-text {
   font-family: 'Nanum Gothic', sans-serif;
@@ -445,4 +465,110 @@ body {
 .road-dash {
   position: absolute;
   display: block;
+}
+
+/* ───────────── STEP 10: 모션 ───────────── */
+/* 2-9 놓기 이펙트: 그림 묶음의 아래쪽 가운데를 기준으로 크기 변화 */
+.art-wrap {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+/* C4 도감 아이콘: 누를 수 있게(튀어오름 + 효과음) */
+.cone-icon {
+  pointer-events: auto !important;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+/* C4 (사용자 수정): 마우스를 올린 동안 올라간 채 유지 */
+.cone-icon {
+  transition: transform var(--cone-lift-ms, 160ms) var(--cone-lift-ease, ease-out);
+}
+.cone-icon.is-up {
+  transform: translateY(var(--cone-lift, -24px));
+}
+/* 스테이지 선택: 도감 표지판 문구 두 줄 (Figma 1:210 "Cone / Collection", Outfit ExtraBold 64) */
+.sign-label-multi {
+  display: block;
+  text-align: center;
+  line-height: normal;
+  white-space: nowrap;
+}
+/* 도감 아이콘 움직임을 GPU에서 매끄럽게 */
+.cone-icon {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* BACK·RESTART: 마우스를 올리면 Figma hover(15:2)의 진한 주황으로 (마우스가 있는 기기만) */
+.button-hover-bg {
+  opacity: 0;
+  transition: opacity var(--button-hover-ms, 150ms) ease-out;
+  pointer-events: none;
+}
+/* 마름모 모양 안에서만 반응(모서리 빈 곳은 무시) */
+.restart,
+.diamond-button {
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+@media (hover: hover) {
+  .restart:hover .button-hover-bg,
+  .diamond-button:hover .button-hover-bg {
+    opacity: 1;
+  }
+}
+/* 도감 판: 화면에 맞춰 최대한 크게(일정 여백) — 위치·배율은 coneScreen.ts */
+.cone-board {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.cone-board > * {
+  position: absolute;
+}
+
+/* C1 메인: 콘 모양 순환 — 아래쪽 가운데 기준으로 살짝 튐 */
+.main-cone {
+  display: block;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+}
+/* C1 메인: Game Start(마름모·글자·누르는 영역)가 위아래로 둥둥 */
+/* Game Start 그림자: Figma처럼 아래 하늘·판과 곱하기. 마름모와 같은 둥둥(같은 키프레임·시간) */
+.main-start-shadow-layer {
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+.main-start-shadow {
+  display: block;
+  pointer-events: none;
+  animation-name: main-start-float;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.main-start-group {
+  pointer-events: none;
+  animation-name: main-start-float;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  will-change: transform;
+}
+.main-start-group > * {
+  position: absolute;
+}
+.main-start-art {
+  display: block;
+  pointer-events: none;
+}
+.main-start-group .main-start {
+  pointer-events: auto;
+}
+@keyframes main-start-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(var(--float-amp, 6px) * -1));
+  }
 }

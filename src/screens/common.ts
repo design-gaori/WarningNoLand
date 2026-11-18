@@ -3,6 +3,8 @@
  */
 import paperWebp from '../../assets/img/paper-texture.webp?url';
 import restartSvg from '../../assets/svg/figma/restart-button.svg?url';
+import buttonHoverSvg from '../../assets/svg/figma/button-hover.svg?url';
+import { MOTION } from '../view/motion';
 
 export function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, parent?: HTMLElement): HTMLElementTagNameMap[K] {
   const e = document.createElement(tag);
@@ -59,6 +61,7 @@ export function addDiamondButton(parent: HTMLElement, label: string, x: number, 
   b.type = 'button';
   place(b, x, y, 236.121, 147.019);
   img(restartSvg, 'diamond-button-bg', b);
+  img(buttonHoverSvg, 'diamond-button-bg button-hover-bg', b); // Figma hover(15:2)
   el('span', 'diamond-button-label', b).textContent = label;
   return b;
 }
@@ -73,5 +76,9 @@ export function showBanner(app: HTMLElement, kind: 'clear' | 'error'): HTMLEleme
   el('span', 'banner-text', band).textContent = kind === 'clear' ? 'Game Clear!' : '오류가 발생했습니다!';
   const paper = app.querySelector(':scope > .paper');
   if (paper) app.insertBefore(layer, paper);
+  // C3: Game Clear는 짧게 페이드인(입력 막기는 띠가 생기는 즉시 — 13-9)
+  if (kind === 'clear' && typeof band.animate === 'function') {
+    band.animate([{ opacity: 0 }, { opacity: 1 }], { duration: MOTION.clearFade.duration, easing: MOTION.clearFade.easing });
+  }
   return layer;
 }
