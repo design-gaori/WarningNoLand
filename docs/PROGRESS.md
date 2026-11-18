@@ -10,6 +10,14 @@ npm run build    # 배포용 빌드 → dist/
 npm run preview  # 빌드 결과 확인 → http://localhost:4173
 ```
 
+## 온라인 배포 (GitHub Pages)
+
+- 게임 주소: https://design-gaori.github.io/WarningNoLand/
+- 저장소: https://github.com/design-gaori/WarningNoLand
+- `main`에 push하면 `.github/workflows/deploy.yml`이 자동으로 실행됩니다. 순서는 테스트 → 빌드 → Pages 배포입니다.
+- 처음 한 번은 저장소 **Settings → Pages → Source**를 **GitHub Actions**로 설정해야 합니다.
+- 빌드는 상대 경로(`vite.config.ts`의 `base: './'`)라서 하위 폴더 주소에서도, 전시 PC의 `dist/`에서도 그대로 동작합니다.
+
 개발 모드 전용 주소:
 - `?screen=select` / `?screen=cone` / `?screen=stage&stage=stage-1`: 해당 화면에서 바로 시작
 - `?demo=1`: 게임 화면에 예시 해답 콘을 미리 배치
