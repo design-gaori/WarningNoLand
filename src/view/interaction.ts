@@ -87,8 +87,15 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
   const ac = new AbortController();
   const signal = ac.signal;
 
+  /**
+   * 잡을 콘 그림 찾기.
+   * - 보드: 콘 그림의 그려진 부분 (Q15)
+   * - 보관함 (사용자 수정, 2026-11-19): 카드의 흰 영역 어디든 → 그 카드의 콘
+   */
   const findArt = (target: EventTarget | null): SVGSVGElement | null => {
     if (!(target instanceof Element)) return null;
+    const card = target.closest<HTMLElement>('.card');
+    if (card) return card.querySelector<SVGSVGElement>('svg.art-storage');
     return target.closest<SVGSVGElement>('svg.art-cone, svg.art-storage');
   };
 
@@ -175,11 +182,64 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
     d.rerender();
   };
 
+  /*
+   * 터치 스크롤 (사용자 수정, 2026-11-19): 콘이 아닌 곳을 손가락으로 끌면 화면을 위아래로 스크롤.
+   * 휴대폰 세로에서는 앱을 90° 돌려 보여주기 때문에 브라우저 기본 스크롤 방향이 손가락 방향과 맞지 않아
+   * 직접 처리한다(손가락 이동 → 앱 좌표로 바꿔 세로 이동량만 사용). 손을 떼면 짧게 미끄러지며 멈춘다.
+   * 마우스 휠·트랙패드는 브라우저 기본 스크롤 그대로.
+   */
+  let pan: { pointerId: number; lastY: number; samples: { t: number; y: number }[] } | null = null;
+  let inertiaRaf: number | undefined;
+  const appY = (e: PointerEvent): number => {
+    const { vp, winW } = d.getViewport();
+    return clientToApp(vp, winW, e.clientX, e.clientY).y;
+  };
+  const stopInertia = (): void => {
+    if (inertiaRaf !== undefined) cancelAnimationFrame(inertiaRaf);
+    inertiaRaf = undefined;
+  };
+  const endPan = (withInertia: boolean): void => {
+    const p = pan;
+    if (!p) return;
+    pan = null;
+    if (d.app.hasPointerCapture(p.pointerId)) d.app.releasePointerCapture(p.pointerId);
+    if (!withInertia) return;
+    const now = performance.now();
+    const recent = p.samples.filter((q) => now - q.t < 100);
+    const first = recent[0];
+    const last = recent[recent.length - 1];
+    if (!first || !last || last.t === first.t) return;
+    let v = ((last.y - first.y) / (last.t - first.t)) * 16; // px / 프레임(약 16ms)
+    const step = (): void => {
+      if (Math.abs(v) < 0.5) {
+        inertiaRaf = undefined;
+        return;
+      }
+      d.scroller.scrollTop -= v;
+      v *= 0.94;
+      inertiaRaf = requestAnimationFrame(step);
+    };
+    inertiaRaf = requestAnimationFrame(step);
+  };
+
   d.app.addEventListener('pointerdown', (e) => {
-    if (s || !enabled) return; // 한 번에 하나만, 결과 띠 중에는 막음 (13-9)
+    stopInertia();
+    if (s || pan || !enabled) return; // 한 번에 하나만, 결과 띠 중에는 막음 (13-9)
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     const artEl = findArt(e.target);
-    if (!artEl) return;
+    if (!artEl) {
+      // 콘이 아닌 곳의 터치 → 스크롤
+      if (e.pointerType !== 'mouse' && e.target instanceof Node && d.scroller.contains(e.target)) {
+        const y = appY(e);
+        pan = { pointerId: e.pointerId, lastY: y, samples: [{ t: performance.now(), y }] };
+        try {
+          d.app.setPointerCapture(e.pointerId);
+        } catch {
+          // 캡처할 수 없는 포인터는 캡처 없이 진행
+        }
+      }
+      return;
+    }
 
     let source: DropSource;
     let coneId: string;
@@ -198,7 +258,12 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
     if (!cone) return;
 
     const vb = artEl.viewBox.baseVal;
-    const svgPoint = clientToArt(artEl, e.clientX, e.clientY);
+    const raw = clientToArt(artEl, e.clientX, e.clientY);
+    // 카드 빈 곳을 잡으면 콘 그림 밖일 수 있음 → 그림 범위 안으로 당겨서, 콘이 손가락 가까이 붙어 오게
+    const svgPoint = {
+      x: Math.min(vb.x + vb.width, Math.max(vb.x, raw.x)),
+      y: Math.min(vb.y + vb.height, Math.max(vb.y, raw.y)),
+    };
     s = {
       pointerId: e.pointerId,
       source,
@@ -224,6 +289,14 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
   }, { signal });
 
   d.app.addEventListener('pointermove', (e) => {
+    if (pan && e.pointerId === pan.pointerId) {
+      const y = appY(e);
+      d.scroller.scrollTop -= y - pan.lastY;
+      pan.lastY = y;
+      pan.samples.push({ t: performance.now(), y });
+      if (pan.samples.length > 20) pan.samples.shift();
+      return;
+    }
     if (!s || e.pointerId !== s.pointerId) return;
     s.lastX = e.clientX;
     s.lastY = e.clientY;
@@ -237,6 +310,10 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
   }, { signal });
 
   d.app.addEventListener('pointerup', (e) => {
+    if (pan && e.pointerId === pan.pointerId) {
+      endPan(true);
+      return;
+    }
     if (!s || e.pointerId !== s.pointerId) return;
     const sess = s;
     if (!sess.dragging) {
@@ -252,6 +329,10 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
 
   // 입력 취소 → 원래 자리 (13-4, 9-2-7)
   const cancel = (e: PointerEvent): void => {
+    if (pan && e.pointerId === pan.pointerId) {
+      endPan(false);
+      return;
+    }
     if (!s || e.pointerId !== s.pointerId) return;
     finish();
   };
@@ -262,8 +343,14 @@ export function installInteraction(d: InteractionDeps): InteractionHandle {
     isBusy: () => s !== null,
     setEnabled(on) {
       enabled = on;
+      if (!on) {
+        endPan(false);
+        stopInertia();
+      }
     },
     destroy() {
+      endPan(false);
+      stopInertia();
       finish();
       ac.abort();
     },

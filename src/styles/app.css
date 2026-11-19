@@ -42,6 +42,8 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: none;
+  /* 터치 스크롤은 interaction.ts가 직접 처리(휴대폰 세로 회전 대응). 휠·트랙패드는 그대로 */
+  touch-action: none;
 }
 .scroller::-webkit-scrollbar {
   display: none;
@@ -102,6 +104,12 @@ body {
   touch-action: none;
   cursor: grab;
 }
+/* 사용자 수정(2026-11-19): 카드 흰 영역 어디서나 콘을 잡는다 */
+.card {
+  touch-action: none;
+  cursor: grab;
+}
+.card[data-empty='true'],
 .card[data-empty='true'] .art-storage {
   cursor: default;
 }

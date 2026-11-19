@@ -97,6 +97,10 @@ export function mountCone(ctx: AppContext): Screen {
 
   const back = addDiamondButton(plane, 'BACK', 70, 47); // Figma 6:8
   back.addEventListener('click', () => ctx.navigate({ name: 'select' }));
+  // 점·BACK 층(plane)은 도감 판 위에 있어 아이콘을 덮는다 → 층은 입력을 통과시키고 BACK만 받는다
+  // (사용자 보고: 모바일 터치 시 콘이 올라오지 않음. 데스크톱 hover도 같은 원인으로 대부분 막혀 있었음)
+  plane.style.pointerEvents = 'none';
+  back.style.pointerEvents = 'auto';
 
   addPaper(app);
 
