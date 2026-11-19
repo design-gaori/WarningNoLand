@@ -167,7 +167,7 @@ body {
   transform: translate(-50%, -50%);
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: max(var(--font-size-restart), calc(var(--font-min-button) / var(--u)));
+  font-size: min(var(--font-max-button), max(var(--font-size-restart), calc(var(--font-min-button) / var(--u))));
   color: var(--color-text-on-orange);
   white-space: nowrap;
 }
@@ -342,7 +342,7 @@ body {
   transform: translate(-50%, -50%);
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: max(var(--font-size-restart), calc(var(--font-min-button) / var(--u)));
+  font-size: min(var(--font-max-button), max(var(--font-size-restart), calc(var(--font-min-button) / var(--u))));
   color: var(--color-text-on-orange);
   white-space: nowrap;
 }

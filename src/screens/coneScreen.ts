@@ -87,7 +87,9 @@ export function mountCone(ctx: AppContext): Screen {
       if (e.pointerType === 'mouse') i.classList.remove('is-up');
     });
     // C6: 누르면 효과음. 터치(마우스 올림이 없는 기기)는 탭할 때 올라갔다 내려오기
-    i.addEventListener('click', () => {
+    // (사용자 수정, 2026-11-19: 소리가 늦게 들림 → 손을 뗄 때(click)가 아니라 누르는 순간 재생)
+    i.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
       if (!i.classList.contains('is-up')) bounce(i);
       playEffect();
     });

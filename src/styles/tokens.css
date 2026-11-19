@@ -43,6 +43,12 @@
   /* 화면에서 이보다 작아지지 않게 하는 최소 크기(실제 화면 px, 가정 G1) */
   --font-min-text: 12px;
   --font-min-button: 14px;
+  /*
+   * BACK·RESTART 글자 최대 크기(디자인 px). 사용자 수정(2026-11-19): 작은 휴대폰에서 최소 크기 규칙 때문에
+   * RESTART가 마름모(236×147) 밖으로 나감 → 이 크기를 넘지 않게 함(이때는 최소 크기보다 작아질 수 있음).
+   * 36 = RESTART가 글자 높이 위치의 마름모 폭 85% 안에 들어가는 크기
+   */
+  --font-max-button: 36px;
 
   /* 종이 질감 (Figma: color-dodge, 투명도 50%) */
   --paper-blend: color-dodge;
