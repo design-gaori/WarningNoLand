@@ -16,8 +16,10 @@ import { STAGES } from '../game/stages';
 import { addDiamondButton, addDot, addPaper, addPlane, addSky, el, img, place } from './common';
 import { MOTION } from '../view/motion';
 
+/** Figma stageselect의 흐린 점. 사용자 수정(2026-11-19): 1:211 위치 변경, 25:5·25:8 추가 */
 const DOTS = [
-  [513, 129, 44], [1616, 496, 25], [1699, 230, 34], [803, 419, 34], [72, 237, 20], [1338, 54, 25],
+  [513, 303, 44], [1616, 496, 25], [1699, 230, 34], [803, 419, 34], [72, 237, 20], [1338, 54, 25],
+  [1800, 781, 25], [1217, 814, 35],
 ] as const;
 
 interface Inset { t: number; r: number; b: number; l: number }

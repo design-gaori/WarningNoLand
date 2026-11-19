@@ -17,10 +17,10 @@ import { addDot, addPaper, addPlane, addSky, el, img, place } from './common';
 
 const iconUrls = import.meta.glob('../../assets/svg/icon/*.svg', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 
-/** Figma main 프레임의 흐린 점 (1:90 ~ 1:97) */
+/** Figma main 프레임의 흐린 점 (1:90 ~ 1:97). 사용자 수정(2026-11-19): 가운데에 몰려 있어 위·바깥쪽으로 옮김 */
 const DOTS = [
-  [1627, 306, 34], [1726, 187, 21], [263, 156, 25], [1297, 225, 25],
-  [639, 184, 41], [161, 461, 34], [483, 340, 18], [1764, 477, 18],
+  [1627, 236, 34], [1758, 78, 21], [263, 86, 25], [1297, 155, 25],
+  [639, 114, 41], [111, 391, 34], [411, 224, 18], [1814, 407, 18],
 ] as const;
 
 /** Game Start 마름모(1:88): 중심 (959.8, 872.7), 437.8 × 273.3 — 누르는 영역 */
