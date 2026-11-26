@@ -3,11 +3,13 @@
  * 상태는 저장하지 않는다 → 새로고침하면 항상 메인 화면 처음 상태(13-8).
  *
  * 흐름: 메인 —Game Start→ 스테이지 선택 —Stage N→ 게임 —성공→ (Game Clear 2.5초) → 메인
- *                         스테이지 선택 —도감 보기→ 도감 —BACK→ 스테이지 선택
+ *                         스테이지 선택 —도감 보기→ 도감 —1.5초, 페이드→ 콘 소개(coneshow) —BACK→ 스테이지 선택
  * 오류(13-10): "오류가 발생했습니다!" 띠(Figma error)를 화면 가운데 2.5초 → 메인
  */
 import { findStage } from '../game/stages';
 import { mountCone } from '../screens/coneScreen';
+import { mountConeShow } from '../screens/coneShowScreen';
+import { MOTION } from '../view/motion';
 import { showBanner } from '../screens/common';
 import { mountMain } from '../screens/mainScreen';
 import { mountSelect } from '../screens/selectScreen';
@@ -32,8 +34,8 @@ export function startApp(app: HTMLElement, initial: Route): void {
   const ctx: AppContext = {
     app,
     viewport: () => ({ vp, winW: window.innerWidth }),
-    navigate(route) {
-      void go(route);
+    navigate(route, opts) {
+      void go(route, false, opts?.fade === true);
     },
     showError(err) {
       console.error(err);
@@ -47,7 +49,19 @@ export function startApp(app: HTMLElement, initial: Route): void {
     },
   };
 
-  async function go(route: Route, fromError = false): Promise<void> {
+  /** 페이드 전환: 이전 화면을 맨 위에 잠시 남겨 두고 투명하게 → 새 화면이 부드럽게 나타남 (입력은 막지 않음) */
+  function fadeOutOld(old: HTMLElement): void {
+    app.appendChild(old);
+    if (typeof old.animate !== 'function') {
+      old.remove();
+      return;
+    }
+    const a = old.animate([{ opacity: 1 }, { opacity: 0 }], { duration: MOTION.coneShow.pageFade, easing: 'ease-in-out', fill: 'forwards' });
+    a.onfinish = () => old.remove();
+    a.oncancel = () => old.remove();
+  }
+
+  async function go(route: Route, fromError = false, fade = false): Promise<void> {
     const seq = ++navSeq;
     if (errorTimer !== undefined && !fromError) {
       window.clearTimeout(errorTimer);
@@ -60,6 +74,14 @@ export function startApp(app: HTMLElement, initial: Route): void {
       console.error(e);
     }
     current = null;
+    // 남아 있던 이전 페이드 층은 정리
+    app.querySelectorAll(':scope > .fade-old').forEach((n) => n.remove());
+    let old: HTMLElement | null = null;
+    if (fade) {
+      old = document.createElement('div');
+      old.className = 'fade-old';
+      old.append(...app.childNodes);
+    }
     try {
       let next: Screen;
       switch (route.name) {
@@ -71,6 +93,9 @@ export function startApp(app: HTMLElement, initial: Route): void {
           break;
         case 'cone':
           next = mountCone(ctx);
+          break;
+        case 'coneshow':
+          next = mountConeShow(ctx);
           break;
         case 'stage': {
           const stage = findStage(route.stageId);
@@ -86,6 +111,7 @@ export function startApp(app: HTMLElement, initial: Route): void {
       current = next;
       app.dataset.screen = route.name;
       relayout();
+      if (old) fadeOutOld(old);
     } catch (e) {
       if (fromError && route.name === 'main') {
         // 메인 화면도 열 수 없으면 반복하지 않고 오류 띠만 남긴다

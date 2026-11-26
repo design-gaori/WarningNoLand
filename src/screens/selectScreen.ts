@@ -15,6 +15,7 @@ import type { AppContext, Screen } from '../app/types';
 import { STAGES } from '../game/stages';
 import { addDiamondButton, addDot, addPaper, addPlane, addSky, el, img, place } from './common';
 import { MOTION } from '../view/motion';
+import type { Viewport } from '../view/viewport';
 
 /** Figma stageselect의 흐린 점. 사용자 수정(2026-11-19): 1:211 위치 변경, 25:5·25:8 추가 */
 const DOTS = [
@@ -68,24 +69,29 @@ export function mountSelect(ctx: AppContext): Screen {
   plane.style.height = '1080px';
   for (const [x, y, d] of DOTS) addDot(plane, x, y, d);
 
+  // 표지판 층: 화면이 1920×1080보다 세로로 길면 늘어난 만큼 아래로 내려 기둥이 도로까지 닿게 한다
+  // (사용자 수정, 2026-11-26: 세로로 긴 화면에서 표지판이 위에 떠 있고 기둥이 허공에서 끝남). 흐린 점·BACK은 그대로 위쪽
+  const signLayer = el('div', 'sign-layer', plane);
+  place(signLayer, 0, 0, 1920, 1080);
+
   // 도감: Frame 21 (120, 347) 501 × 894 — Figma 수정본(기둥 y 102, 길이 989 / 문구 "Cone Collection" 두 줄)
-  const dex = el('button', 'sign sign-dex', plane);
+  const dex = el('button', 'sign sign-dex', signLayer);
   dex.type = 'button';
   place(dex, 120, 347, 501, 894);
   place(el('div', 'sign-pole', dex), 226, 102, 50, 989);
   const board = el('div', 'sign-dex-board', dex);
-  place(board, 37, 152, 427, 358);
+  place(board, 37, 179, 427, 268); // Figma 수정본(2026-11-26): 1:208
   const inner = el('div', 'sign-dex-inner', dex);
-  place(inner, 57, 173, 386, 227);
+  place(inner, 58, 200, 386, 227); // 1:209
   const dexLabel = el('span', 'sign-label sign-label-multi', dex);
-  place(dexLabel, 251 - 192, 206, 384);
+  place(dexLabel, 251 - 192, 233, 384); // 1:210
   dexLabel.append('Cone', document.createElement('br'), 'Collection');
   dex.addEventListener('click', () => ctx.navigate({ name: 'cone' }));
 
   // 스테이지 표지판: 데이터 목록으로 채움
   SLOTS.forEach((slot, i) => {
     const stage = STAGES[i];
-    const sign = el('button', 'sign sign-stage', plane);
+    const sign = el('button', 'sign sign-stage', signLayer);
     sign.type = 'button';
     place(sign, slot.frame.x, slot.frame.y, slot.frame.w, slot.frame.h);
     place(el('div', 'sign-pole', sign), slot.pole.x, slot.pole.y, slot.pole.w, slot.pole.h);
@@ -124,5 +130,11 @@ export function mountSelect(ctx: AppContext): Screen {
   back.addEventListener('click', () => ctx.navigate({ name: 'main' }));
 
   addPaper(app);
-  return { relayout() {}, destroy() {} };
+
+  const fit = (vp: Viewport): void => {
+    const extra = Math.max(0, vp.viewHDesign - 1080); // 디자인 px
+    signLayer.style.transform = extra > 0 ? `translateY(${extra}px)` : '';
+  };
+  fit(ctx.viewport().vp);
+  return { relayout: fit, destroy() {} };
 }

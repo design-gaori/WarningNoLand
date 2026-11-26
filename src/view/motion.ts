@@ -68,4 +68,27 @@ export const MOTION = {
     popDuration: 200, // 바뀔 때 살짝 튀는 시간
     popScale: 1.06,
   },
+
+  /** coneshow: 도감 → 콘 소개 자동 이동, 큰 콘 미끄러짐, 글 바뀜 */
+  coneShow: {
+    /*
+     * 도감에 들어오자마자 판이 확대되며 넘어감.
+     * 사용자 수정(2026-11-26): 더 빠르고 쫀쫀하게, 디즈니 애니메이션처럼
+     * → ① 예비 동작: 살짝 움츠러들었다가 ② 확 튀어 나가듯 크게 확대 ③ 끝에서 사라짐
+     */
+    zoomDelay: 300, // 도감이 보인 뒤 움직이기 시작할 때까지 (사용자 수정 2026-11-26: 0.3초)
+    zoomDuration: 1000, // 움직이는 시간 (끝나면 바로 이동)
+    zoomAnticipate: 0.9, // ① 움츠러드는 크기
+    zoomAnticipateAt: 0.22, // ① 이 지점(전체의 22%)까지 움츠러듦
+    zoomAnticipateEasing: 'cubic-bezier(0.33, 1, 0.68, 1)', // 빠르게 움츠렸다 멈칫
+    zoomScale: 5, // ② 끝 크기 배율
+    zoomEasing: 'cubic-bezier(0.5, 0, 0.9, 0.3)', // ② 바로 출발해서 끝으로 갈수록 확 가속
+    zoomFadeFrom: 0.75, // ③ 이 지점부터 투명해지기 시작
+    pageFade: 250, // 남은 배경(하늘·BACK)이 콘 소개 화면으로 바뀌는 시간
+    slide: 550, // 큰 콘이 좌우로 미끄러지는 시간
+    slideEasing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    thumbFade: 200, // 하단 콘 밝아지기·흐려지기
+    textFade: 300, // 좌측 하단 글이 바뀔 때
+    swipeMin: 60, // 스와이프로 인정하는 최소 거리(디자인 px)
+  },
 } as const;

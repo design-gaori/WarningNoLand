@@ -58,7 +58,9 @@ export function mountCone(ctx: AppContext): Screen {
    * 사용자 요청대로 화면 상하좌우에 같은 여백(BOARD_MARGIN)을 두고 최대한 크게 맞춘다(비율 유지, 가운데).
    * 흐린 점·BACK은 지금처럼 화면 기준(1920 배율) 그대로.
    */
-  const board = el('div', 'cone-board', app);
+  // 확대 전환용 층: 도감 판만 담는다(하늘·점·BACK·종이 질감은 제외)
+  const zoom = el('div', 'cone-zoom', app);
+  const board = el('div', 'cone-board', zoom);
   board.style.width = `${GROUP.w}px`;
   board.style.height = `${GROUP.h}px`;
 
@@ -115,5 +117,35 @@ export function mountCone(ctx: AppContext): Screen {
     board.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
   };
   fit(ctx.viewport().vp);
-  return { relayout: fit, destroy() {} };
+
+  // 사용자 지시(2026-11-26): 들어오자마자 도감 판이 크게 확대되며(끝에서 사라짐) 콘 소개(coneshow)로 넘어감
+  // 움츠렸다가(예비 동작) 확 튀어 나가는 확대. 크기와 투명도는 따로 움직인다
+  const z = MOTION.coneShow;
+  let zoomAnim: Animation | null = null;
+  let autoTimer: number | undefined;
+  const goNext = (): void => ctx.navigate({ name: 'coneshow' }, { fade: true });
+  if (typeof zoom.animate === 'function') {
+    zoomAnim = zoom.animate(
+      [
+        { transform: 'scale(1)', easing: z.zoomAnticipateEasing },
+        { transform: `scale(${z.zoomAnticipate})`, offset: z.zoomAnticipateAt, easing: z.zoomEasing },
+        { transform: `scale(${z.zoomScale})` },
+      ],
+      { duration: z.zoomDuration, delay: z.zoomDelay, fill: 'forwards' },
+    );
+    zoom.animate(
+      [{ opacity: 1 }, { opacity: 1, offset: z.zoomFadeFrom }, { opacity: 0 }],
+      { duration: z.zoomDuration, delay: z.zoomDelay, fill: 'forwards' },
+    );
+    zoomAnim.onfinish = goNext;
+  } else {
+    autoTimer = window.setTimeout(goNext, z.zoomDelay + z.zoomDuration);
+  }
+  return {
+    relayout: fit,
+    destroy() {
+      if (zoomAnim) zoomAnim.onfinish = null;
+      window.clearTimeout(autoTimer);
+    },
+  };
 }

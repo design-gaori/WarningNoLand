@@ -156,13 +156,13 @@ export function buildShell(app: HTMLElement, stage: StageDef, state: GameState):
   return { scroller, scrollContent, stagePlane, board, restart, back, storage, dragLayer, tickerTrack };
 }
 
-/** Figma에서 첫 문구가 시작하는 x (Frame 13, 1:645) */
-const TICKER_START_X = 671;
+/** Figma에서 첫 문구가 시작하는 x (Frame 13, 1:645 — 2026-11-26 수정본) */
+const TICKER_START_X = 315.5;
 
 /**
- * C5 안내 띠 흐름: 문구 묶음(문구 2개 + 간격)을 화면을 덮을 만큼 반복하고,
+ * C5 안내 띠 흐름: 문구 묶음(문구 4개 + 간격)을 화면을 덮을 만큼 반복하고,
  * 묶음 하나 너비만큼 왼쪽으로 이동하는 애니메이션을 끝없이 반복한다(이음매 없음).
- * 시작 위치는 Figma와 같다(첫 문구 x 671).
+ * 시작 위치는 Figma와 같다(첫 문구 x 315.5).
  */
 function layoutTicker(track: HTMLElement): void {
   const make = (): HTMLElement => {
@@ -170,8 +170,8 @@ function layoutTicker(track: HTMLElement): void {
     g.className = 'ticker-group';
     for (const t of L.ticker.texts) {
       const s = document.createElement('span');
-      s.className = 'ticker-text';
-      s.textContent = t;
+      s.className = `ticker-text ticker-text-${t.lang}`;
+      s.textContent = t.text;
       g.appendChild(s);
     }
     return g;

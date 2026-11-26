@@ -1,6 +1,6 @@
+import '@fontsource/outfit/700.css';
 import '@fontsource/outfit/800.css';
 import '@fontsource/outfit/900.css';
-import '@fontsource/nanum-gothic/800.css';
 import './styles/app.css';
 
 import { startApp } from './app/router';
@@ -19,7 +19,7 @@ if (!app) {
   if (import.meta.env.DEV) {
     const q = new URLSearchParams(location.search);
     const screen = q.get('screen');
-    if (screen === 'select' || screen === 'cone') initial = { name: screen };
+    if (screen === 'select' || screen === 'cone' || screen === 'coneshow') initial = { name: screen };
     if (screen === 'stage') initial = { name: 'stage', stageId: q.get('stage') ?? 'stage-1' };
   }
   // ── /DEV ONLY

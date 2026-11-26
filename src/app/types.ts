@@ -1,6 +1,6 @@
 import type { Viewport } from '../view/viewport';
 
-export type Route = { readonly name: 'main' } | { readonly name: 'select' } | { readonly name: 'cone' } | { readonly name: 'stage'; readonly stageId: string };
+export type Route = { readonly name: 'main' } | { readonly name: 'select' } | { readonly name: 'cone' } | { readonly name: 'coneshow' } | { readonly name: 'stage'; readonly stageId: string };
 
 /** 화면 하나 (메인·스테이지 선택·도감·게임) */
 export interface Screen {
@@ -12,7 +12,8 @@ export interface Screen {
 
 export interface AppContext {
   readonly app: HTMLElement;
-  navigate(route: Route): void;
+  /** fade: 이전 화면이 서서히 사라지며 새 화면이 나타남 */
+  navigate(route: Route, opts?: { fade?: boolean }): void;
   /** 현재 화면 배율 정보 */
   viewport(): { vp: Viewport; winW: number };
   /** 예기치 못한 오류 표시 (13-10) */

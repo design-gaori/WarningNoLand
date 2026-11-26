@@ -1,0 +1,25 @@
+{
+  "$comment": "coneshow 화면 좌측 하단 글. 순서 = 화면 하단 콘 순서(Figma coneshow Frame 27, 왼쪽부터). id는 assets/svg/icon/<id>.svg. title = 큰 글자(40px), lines = 아래 글 한 줄씩(24px). 비워 두면 그 줄은 표시하지 않음. 한글을 바꾸면 npm run font 실행.",
+  "cones": [
+    { "id": "safety-cone",   "title": "안전콘",     "lines": ["안전하다.", "거리를 게임으로 만든다."] },
+    { "id": "tree",          "title": "트리",       "lines": ["MERRY", "CHRISTMAS"] },
+    { "id": "sign-board",    "title": "표지판",     "lines": ["외계인 침공 시", "이걸 본 사람이 먼저..."] },
+    { "id": "cat",           "title": "고양이",     "lines": ["냐냐냥!", "(냐냐냥이라는 뜻)"] },
+    { "id": "traffic-light", "title": "신호등",     "lines": ["기다리자.", "빨간불이다."] },
+    { "id": "easel",         "title": "이젤",       "lines": ["안전콘을 그린", "그림을 그린 그림."] },
+    { "id": "lamp",          "title": "전등",       "lines": ["불 좀 꺼줄래?", "내 콘 좀 보게."] },
+    { "id": "umbrella",      "title": "우산",       "lines": ["도난방지우산.", "아무도 안 훔쳐간다."] },
+    { "id": "soju",          "title": "소주",       "lines": ["한국의 술.", "힘들었나보다."] },
+    { "id": "cheese",        "title": "치즈",       "lines": ["톰과제리에 나오는", "구멍난 치즈."] },
+    { "id": "cake",          "title": "케이크",     "lines": ["11.28, 나에게.", "생일 축하해!"] },
+    { "id": "trash-can",     "title": "쓰레기통",   "lines": ["쓰레기통이다.", "집처럼 생겼다."] },
+    { "id": "fire-hydrant",  "title": "소화전",     "lines": ["꼬마병정같다.", "작을수록 귀엽다."] },
+    { "id": "wine",          "title": "와인",       "lines": ["와인일까 주스일까?", "빨대로 마시다니."] },
+    { "id": "flower-pot",    "title": "화분",       "lines": ["스스로 자라는 식물.", "이름은 식식이."] },
+    { "id": "person",        "title": "사람",       "lines": ["사람이다.", "이름은 뭘까?"] },
+    { "id": "poop",          "title": "똥",         "lines": ["똥이다.", "똥."] },
+    { "id": "ice-cream",     "title": "아이스크림", "lines": ["누군가가 떨어뜨렸다.", "마음이 아프다..."] },
+    { "id": "hat",           "title": "모자",       "lines": ["마법사 모자이다.", "기숙사를 정해주진 않는다."] },
+    { "id": "french-fries",  "title": "감자튀김",   "lines": ["기본 감자튀김이다.", "나는 양념감자가 더 좋다."] }
+  ]
+}

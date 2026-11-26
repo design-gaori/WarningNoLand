@@ -35,8 +35,8 @@
   --size-restart-w: 236.121px;
   --size-restart-h: 147.019px;
 
-  /* 글꼴: 영문 Outfit, 한글 나눔고딕 ExtraBold (Q4) */
-  --font-family: 'Outfit', 'Nanum Gothic', sans-serif;
+  /* 글꼴: 영문 Outfit, 한글 YES Gothic ExtraBold (2026-11-26 변경, 이전 Q4: 나눔고딕) */
+  --font-family: 'Outfit', 'YES Gothic', sans-serif;
   --font-size-restart: 28px;
   --font-size-count: 24px;
   --font-size-ticker: 20px;

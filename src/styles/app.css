@@ -1,5 +1,14 @@
 @import './tokens.css';
 
+/* 한글: YES Gothic(YES24 고딕) ExtraBold — 사이트에 쓰는 글자만 남긴 파일(npm run font로 다시 만듦) */
+@font-face {
+  font-family: 'YES Gothic';
+  src: url('../../assets/fonts/yes24-gothic-eb.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+}
+
 *,
 *::before,
 *::after {
@@ -230,7 +239,7 @@ body {
   font-weight: 900;
   font-size: max(var(--font-size-count), calc(var(--font-min-text) / (var(--u) * var(--card-s, 1))));
   line-height: 1;
-  color: var(--color-orange-deep);
+  color: var(--color-card-border); /* Figma 수정본(2026-11-26): 숫자 #1fa6fb */
 }
 
 /* 화면 고정 UI — 아래쪽 기준: 안내 띠 (화면 맨 아래에 붙음)
@@ -276,11 +285,17 @@ body {
   }
 }
 .ticker-text {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'YES Gothic', sans-serif;
   font-weight: 800;
-  font-size: calc(var(--ticker-h, 48) * 1px * 20 / 48);
+  font-size: calc(var(--ticker-h, 48) * 1px * 18 / 48); /* Figma 수정본: 한글 18 */
   line-height: 1;
   color: var(--color-text-on-orange);
+}
+/* Figma 수정본(2026-11-26): 영문 문구 Outfit Bold 20 */
+.ticker-text-en {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: calc(var(--ticker-h, 48) * 1px * 20 / 48);
 }
 
 /* 맨 위: 종이 질감 (Figma 1:651) — 화면 전체를 여백 없이 덮음 */
@@ -374,6 +389,13 @@ body {
   position: absolute;
   pointer-events: auto;
 }
+/* 표지판 층 (selectScreen.ts: 세로로 긴 화면에서 아래로 내림) */
+.sign-layer {
+  pointer-events: none;
+}
+.sign-layer > .sign {
+  position: absolute;
+}
 .sign[data-disabled='true'] {
   cursor: default;
 }
@@ -402,7 +424,7 @@ body {
   pointer-events: none !important;
 }
 .sign-label-ko {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'YES Gothic', sans-serif;
 }
 .sign-dex-board {
   border: 3px solid #000000;
@@ -452,7 +474,7 @@ body {
   height: calc(148px * var(--u));
 }
 .banner-error .banner-text {
-  font-family: 'Nanum Gothic', sans-serif; /* 사용자 답변: Figma의 Pretendard 대신 나눔고딕 ExtraBold */
+  font-family: 'YES Gothic', sans-serif; /* 한글 = YES Gothic ExtraBold (2026-11-26 규칙 변경) */
   font-weight: 800;
   font-size: max(calc(48px * var(--u)), var(--font-min-text));
   color: #ffffff;
@@ -579,4 +601,153 @@ body {
   50% {
     transform: translateY(calc(var(--float-amp, 6px) * -1));
   }
+}
+
+/* ───────────── 콘 소개(coneshow, Figma 31:2) ───────────── */
+/* 도로: 구성 y 385부터 화면 아래 끝까지, 가로 전체 (위치는 coneShowScreen.ts fit) */
+.cs-road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #424242;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cs-road-dash {
+  position: absolute;
+  display: block;
+}
+/* 1920×1080 구성 면 (점·조작 요소). 크기 맞춤은 transform */
+.cs-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.cs-stage > * {
+  position: absolute;
+}
+.cs-controls button {
+  pointer-events: auto;
+}
+/* 큰 콘 줄 */
+.cs-reel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1080px;
+  transform-origin: 0 0;
+  touch-action: pan-y;
+}
+.cs-track {
+  position: absolute;
+  inset: 0;
+}
+/* 큰 콘: --dx = 가운데 자리에서 옆으로 옮긴 거리(순환, coneShowScreen.ts), --s = 크기 */
+.cs-big {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+  transform: translateX(var(--dx, 0px)) scale(var(--s, 1));
+  transform-origin: 25% 100%; /* 바닥 기준으로 줄어듦 → 도로 위에 서 있는 느낌 유지 */
+  will-change: transform, opacity;
+}
+.cs-big.is-hidden {
+  opacity: 0;
+}
+/* 다음 콘 미리보기: 작고 흐리게 (하단 콘 줄의 '선택 안 됨' 표현과 같은 계열) */
+.cs-big.is-next {
+  --s: 0.7;
+  opacity: 0.35;
+}
+.cs-big-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* 화살표: 옆으로 누운 흰 삼각형 */
+.cs-arrow {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cs-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.cs-arrow-img {
+  display: block;
+  width: 36.17px;
+  height: 44.31px;
+  pointer-events: none;
+}
+.cs-arrow-prev .cs-arrow-img {
+  transform: rotate(-90deg);
+}
+.cs-arrow-next .cs-arrow-img {
+  transform: rotate(90deg);
+}
+/* 좌측 하단 글 (Figma: 제목 40 / 본문 24, 줄 높이 48). 한글 = YES Gothic ExtraBold */
+.cs-text {
+  color: #ffffff;
+  font-family: 'YES Gothic', sans-serif;
+  font-weight: 800;
+  pointer-events: none;
+}
+.cs-title {
+  font-size: 40px;
+  line-height: 50px;
+  height: 86px; /* 본문 시작 y 731 = 645 + 86 */
+}
+.cs-body {
+  font-size: 24px;
+  line-height: 48px;
+}
+.cs-body p {
+  margin: 0;
+}
+/* 하단 콘: 선택 안 된 콘은 투명도 20% (Figma) */
+.cs-thumb {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: 0.2;
+}
+.cs-thumb.is-active {
+  opacity: 1;
+}
+.cs-thumb-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 페이드 전환 때 잠시 남는 이전 화면 (router.ts fadeOutOld). 입력은 새 화면이 받는다 */
+.fade-old {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.fade-old * {
+  pointer-events: none !important;
+}
+
+/* 도감 → 콘 소개 확대 전환 층 (화면 가운데 기준으로 커짐) */
+.cone-zoom {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
 }

@@ -9,7 +9,13 @@ export const STAGE1_LAYOUT = {
   /** 보관 영역: 오른쪽 끝 x = 1850 고정. 카드 원래 크기 263×320, 간격 8(Q36) */
   storage: { x: 1587, y: 48, w: 263, right: 1850, cardW: 263, cardH: 320, gap: 8 },
   /** 안내 띠: 높이 48, 글자 20 (위아래 여백 14씩). minFontPx = 화면에서의 최소 글자 크기(가정 G1) */
-  ticker: { h: 48, fontSize: 20, minFontPx: 12, texts: ['안전콘과 안전콘을 연결하자!', '여러 콘들을 옮겨보세요 :)'] },
+  ticker: { h: 48, fontSize: 20, minFontPx: 12, texts: [
+    // Figma 수정본(2026-11-26, 1:645): 한글 18px(YES Gothic ExtraBold) / 영문 20px(Outfit Bold)
+    { text: '안전콘과 안전콘을 연결하자!', lang: 'ko' },
+    { text: 'Let’s connect the safety cones!', lang: 'en' },
+    { text: '여러 콘들을 옮겨보세요 :)', lang: 'ko' },
+    { text: 'Try moving the cones :)', lang: 'en' },
+  ] },
   /**
    * 보드: Figma 격자 한 칸 236.121 × 147.019 → 기준 칸(198.63)의 1.18875배.
    * origin = 칸 (0,0)(시작 땅) 중심. Frame 22(70,48) + 칸 (825.82, 179.51)
