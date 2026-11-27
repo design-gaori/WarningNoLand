@@ -43,6 +43,11 @@ export const MOTION = {
     easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)', // 살짝 넘쳤다 돌아옴
   },
 
+  /** 스테이지 선택 ◀ ▶: 한 번 누르면 끝까지 부드럽게 넘김 (ease-out) — 가정값 */
+  selectGlide: {
+    duration: 600,
+  },
+
   /** BACK·RESTART 마우스 올림: Figma hover(15:2) 색으로 바뀌는 시간 */
   buttonHover: {
     duration: 150,

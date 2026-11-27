@@ -481,18 +481,75 @@ body {
 }
 
 /* 스테이지 선택: 도로 (Figma 7:183) — 화면 아래 끝 기준, 가로는 화면 밖까지(-133 ~ 2054) */
-.road {
+/* 스테이지 선택: 땅(Group 30, 높이 351)과 하단 띠(Rectangle 19, 높이 48). 화면 아래에 붙고 넘기지 않음 */
+.select-road,
+.select-band {
   position: absolute;
-  left: calc(-133px * var(--u));
+  left: 0;
   bottom: 0;
-  width: 2187px;
-  height: 157px;
-  background: #424242;
-  transform: scale(var(--u));
-  transform-origin: 0 100%;
+  width: 100%;
   pointer-events: none;
 }
-.road-dash {
+.select-road {
+  height: calc(351px * var(--u));
+  background: #424242;
+}
+.select-band {
+  height: calc(48px * var(--u));
+  background: #474647;
+}
+/* 넘기는 면 (흐린 점·표지판) */
+.select-track {
+  pointer-events: none;
+  will-change: transform;
+}
+.select-track > .sign-layer {
+  position: absolute;
+}
+/* 화살표·이동 바 층 */
+.select-bottom {
+  pointer-events: none;
+}
+.select-bottom > * {
+  position: absolute;
+  pointer-events: auto;
+}
+.select-arrow {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.select-arrow-img {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+.select-thumb {
+  cursor: grab;
+  touch-action: none;
+}
+.select-thumb[data-dragging='true'] {
+  cursor: grabbing;
+}
+.select-thumb-line {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+/* 사각 표지판 (Stage 3, Rectangle 17·18) */
+.sign-square-board {
+  border: 3px solid #231815;
+  border-radius: 30px;
+  background: linear-gradient(to bottom, #ff7531, #ff833e 51.923%, #ffae67);
+}
+.sign-square-inner {
+  border: 12px solid #ffffff;
+  border-radius: 14px;
+  pointer-events: none !important;
+}
+/* 별 표지판 (Stage 4, Star 1·2: −15° 회전) */
+.sign-rotated-img {
   position: absolute;
   display: block;
 }

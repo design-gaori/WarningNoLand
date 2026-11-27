@@ -1,0 +1,6 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="391.8" height="391.8" viewBox="0 0 391.8 391.8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="stroke0_0_4" fill="white">
+<path d="M195.9 0L293.85 26.2456L365.554 97.9499L391.8 195.9L365.554 293.85L293.85 365.554L195.9 391.8L97.9499 365.554L26.2456 293.85L0 195.9L26.2456 97.9499L97.9499 26.2456L195.9 0Z"/>
+</mask>
+<path id="Star 2" d="M195.9 0L293.85 26.2456L365.554 97.9499L391.8 195.9L365.554 293.85L293.85 365.554L195.9 391.8L97.9499 365.554L26.2456 293.85L0 195.9L26.2456 97.9499L97.9499 26.2456L195.9 0Z" stroke-width="24" stroke="white" mask="url(#stroke0_0_4)"/>
+</svg>
