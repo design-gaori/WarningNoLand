@@ -36,6 +36,14 @@ export interface StageDef {
   readonly cones: readonly StageConeSupply[];
   /** 풀 수 있는지 확인용 예시 해답 (10-4-1) */
   readonly exampleSolution?: readonly PlacementSpec[];
+  /** 하늘 배경 그라디언트(위 → 아래). 없으면 기본 파란 하늘(tokens.css) */
+  readonly sky?: StageSky;
+}
+
+/** 스테이지 하늘 배경 색 (Figma 스테이지 프레임의 세로 그라디언트) */
+export interface StageSky {
+  readonly top: string;
+  readonly bottom: string;
 }
 
 /** 보드에 놓인 콘 하나 */

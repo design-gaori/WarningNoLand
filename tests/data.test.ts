@@ -16,6 +16,14 @@ describe('데이터 파일', () => {
     expect(cones).toHaveLength(20);
   });
 
+  it('하늘 배경(sky): 없으면 기본, 있으면 #rrggbb 두 색만 받는다', () => {
+    expect(stage.sky).toBeUndefined();
+    const withSky = parseStage({ ...stage1Json, sky: { top: '#d0e55a', bottom: '#edc73f' } }, cones);
+    expect(withSky.sky).toEqual({ top: '#d0e55a', bottom: '#edc73f' });
+    expect(() => parseStage({ ...stage1Json, sky: { top: 'yellow', bottom: '#edc73f' } }, cones)).toThrow(/sky/);
+    expect(() => parseStage({ ...stage1Json, sky: { top: '#d0e55a' } }, cones)).toThrow(/sky/);
+  });
+
   it('잘못된 데이터는 거부한다', () => {
     expect(() => parseCones({ cones: [{ id: 'x', pattern: [[1, 0]], asset: { piece: 'a', icon: 'b' } }] })).toThrow(/기준 칸/);
     expect(() =>

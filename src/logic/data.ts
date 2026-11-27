@@ -1,5 +1,5 @@
 import { cellKey } from './grid';
-import type { Cell, ConeDef, PlacementSpec, StageDef } from './types';
+import type { Cell, ConeDef, PlacementSpec, StageDef, StageSky } from './types';
 
 /** JSON의 [열, 행] 배열을 Cell로 바꾼다 */
 function toCell(v: unknown, where: string): Cell {
@@ -80,6 +80,14 @@ export function parseStage(json: unknown, cones: readonly ConeDef[]): StageDef {
     });
   }
 
+  let sky: StageSky | undefined;
+  if (r.sky !== undefined) {
+    const x = r.sky as { top?: unknown; bottom?: unknown };
+    const hex = (v: unknown): v is string => typeof v === 'string' && /^#[0-9a-fA-F]{6}$/.test(v);
+    if (!hex(x?.top) || !hex(x?.bottom)) throw new Error(`${where}.sky: { "top": "#rrggbb", "bottom": "#rrggbb" } 형식이어야 합니다`);
+    sky = { top: x.top, bottom: x.bottom };
+  }
+
   return {
     id,
     name: typeof r.name === 'string' ? r.name : id,
@@ -89,5 +97,6 @@ export function parseStage(json: unknown, cones: readonly ConeDef[]): StageDef {
     islands,
     cones: supply,
     ...(exampleSolution ? { exampleSolution } : {}),
+    ...(sky ? { sky } : {}),
   };
 }

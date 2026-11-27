@@ -85,7 +85,12 @@ export interface ShellRefs {
 
 export function buildShell(app: HTMLElement, stage: StageDef, state: GameState): ShellRefs {
   app.replaceChildren();
-  el('div', 'sky', app);
+  const sky = el('div', 'sky', app);
+  // 스테이지별 하늘 색 (데이터에 없으면 tokens.css의 기본 파란 하늘)
+  if (stage.sky) {
+    sky.style.setProperty('--color-sky-top', stage.sky.top);
+    sky.style.setProperty('--color-sky-bottom', stage.sky.bottom);
+  }
 
   // ── 스크롤되는 면: 구름·보드·점 (Q30)
   const scroller = el('div', 'scroller', app);
