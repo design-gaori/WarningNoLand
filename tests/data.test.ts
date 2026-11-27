@@ -32,7 +32,7 @@ describe('데이터 파일', () => {
   });
 
   it('스테이지 1: 콘 종류와 수량이 데이터와 일치 (15-3)', () => {
-    expect(createInitialState(rules).storage).toEqual({ tree: 5, 'sign-board': 5, 'fire-hydrant': 5 });
+    expect(createInitialState(rules).storage).toEqual({ tree: 5, 'sign-board': 5, 'fire-hydrant': 5, 'ice-cream': 5, cat: 5 });
   });
 
   it('스테이지 1: 시작·도착 땅은 각각 격자 칸과 변을 공유한다', () => {
@@ -56,7 +56,7 @@ describe('스테이지 1 예시 해답 (10-4-1, 15-3)', () => {
   it('예시 해답의 모든 콘을 규칙대로 놓을 수 있다', () => {
     const s = playExample();
     expect(s.placed).toHaveLength(11);
-    expect(s.storage).toEqual({ tree: 0, 'sign-board': 0, 'fire-hydrant': 4 });
+    expect(s.storage).toEqual({ tree: 0, 'sign-board': 0, 'fire-hydrant': 4, 'ice-cream': 5, cat: 5 });
   });
 
   it('예시 해답으로 연결 성공', () => {

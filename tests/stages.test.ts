@@ -57,8 +57,8 @@ describe.each(STAGES.map((s) => [s.id, s] as const))('%s', (_id, stage) => {
     expect(stage.islands).toHaveLength(0);
   });
 
-  it('보관 카드는 3종 이하 — Figma 디자인이 3장 기준', () => {
-    expect(stage.cones.length).toBeLessThanOrEqual(3);
+  it('보관 카드는 5종 이하 — Figma 디자인이 최대 5장 (2026-11-28 사용자 확인, 4장부터 보관 영역 스크롤 Q37)', () => {
+    expect(stage.cones.length).toBeLessThanOrEqual(5);
   });
 
   it('시작·도착 땅의 모든 칸이 격자 칸과 변을 공유한다', () => {
