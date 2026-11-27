@@ -107,8 +107,8 @@
       "nameKo": "사람",
       "category": "screen-icon",
       "usage": "main·cone(도감) 화면용 1칸 그림",
-      "viewBox": "0 0 217.62 242.25",
-      "bytes": 8560
+      "viewBox": "0 0 217.6 242.2",
+      "bytes": 12779
     },
     {
       "id": "piece-person",
@@ -117,8 +117,8 @@
       "nameKo": "사람",
       "category": "cone",
       "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
-      "viewBox": "0 0 669.78 454.84",
-      "bytes": 23058
+      "viewBox": "0 0 669.8 454.8",
+      "bytes": 20997
     },
     {
       "id": "icon-soju",
@@ -247,8 +247,8 @@
       "nameKo": "와인",
       "category": "screen-icon",
       "usage": "main·cone(도감) 화면용 1칸 그림",
-      "viewBox": "0 0 217.62 282.29",
-      "bytes": 23891
+      "viewBox": "0 0 217.6 282.3",
+      "bytes": 19454
     },
     {
       "id": "piece-wine",
@@ -257,8 +257,8 @@
       "nameKo": "와인",
       "category": "cone",
       "usage": "게임 배치·보관 카드용 콘(칸 패턴 포함)",
-      "viewBox": "0 0 330.84 494.88",
-      "bytes": 32145
+      "viewBox": "0 0 330.8 494.9",
+      "bytes": 24558
     },
     {
       "id": "icon-umbrella",
